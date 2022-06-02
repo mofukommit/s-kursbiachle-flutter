@@ -15,9 +15,10 @@ class PupilCheck extends StatefulWidget {
 }
 
 class PupilCheckState extends State<PupilCheck> {
-  Future<Pupil>? futurePupil;
+   late Pupil? pupil;
+   var isLoaded = false;
 
-  @override
+   @override
   void initState() {
     super.initState();
     //fetch data from API
@@ -25,7 +26,12 @@ class PupilCheckState extends State<PupilCheck> {
   }
 
   getPupil() async {
-    var futurePupil = await GetPupil().getPupil(widget.args!['pupilID']);
+    pupil = await GetPupil().getPupil(widget.args!['pupilID']);
+    if (pupil != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
   }
 
   @override
@@ -41,8 +47,18 @@ class PupilCheckState extends State<PupilCheck> {
         title: const Text("Testseite"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(widget.args!['pupilID']),
+      body: Visibility(
+        visible: isLoaded,
+        replacement: const Center(
+          child: CircularProgressIndicator(),
+        ),
+        child: PageView.builder(
+          itemBuilder: (context, index){
+            return Container(
+              child: Text(pupil!.sname),
+            );
+          },
+        )
 
         /* child: FutureBuilder<Pupil>(
           future: futurePupil,

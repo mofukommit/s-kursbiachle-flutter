@@ -24,8 +24,7 @@ class GetPupil {
 
     if (response.statusCode == 200) {
       var json = response.body;
-      Map<String, dynamic> map = jsonDecode(json);
-      return Pupil.fromJson(map);
+      return pupilFromJson(json);
     } else {
       throw Exception('Failed to load pupil');
     }
