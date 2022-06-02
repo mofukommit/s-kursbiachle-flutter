@@ -6,6 +6,8 @@ import 'package:skursbiachle/services/get_pupil.dart';
 import 'package:skursbiachle/services/get_pupil_id.dart';
 import 'package:skursbiachle/widgets/qr_scanner_overlay.dart';
 
+import 'subpages/pupil_check.dart';
+
 class QrCodeScanner extends StatefulWidget {
   const QrCodeScanner({Key? key}) : super(key: key);
 
@@ -51,7 +53,7 @@ class QrCodeScannerState extends State<QrCodeScanner>
                     this.barcode = 'SCANNED';
                     final data = getID(barcode.rawValue);
                     if (data is GetPupilID) {
-                      Navigator.pushNamed(context, '/PupilCheck', arguments: data.pupilID);
+                      Navigator.pushNamed(context, '/PupilCheck', arguments: {'pupilID' : data.pupilID,});
                     } else if (data is KeyCreation) {
                       print('KEY');
                     } else {

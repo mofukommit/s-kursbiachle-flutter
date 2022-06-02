@@ -8,7 +8,7 @@ import 'pages/settings.dart';
 import 'pages/subpages/pupil_check.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -29,9 +29,9 @@ class MyApp extends StatelessWidget {
         "/QrCodeScanner": (BuildContext context) => const QrCodeScanner(),
         "/closing" : (BuildContext context) => const Closing(),
         "/settings": (BuildContext context) => const Settings(),
-        "/PupilCheck": (BuildContext context) => PupilCheck(pupilID: '',),
-
-      },
+        "/PupilCheck": (context) => PupilCheck(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
+        // "/PupilCheck": (BuildContext context) => const PupilCheck(),
+        },
       home: const RootWidget(),
     );
   }
