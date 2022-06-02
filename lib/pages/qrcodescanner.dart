@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+
 import 'package:skursbiachle/services/get_pupil.dart';
 import 'package:skursbiachle/services/get_pupil_id.dart';
 import 'package:skursbiachle/widgets/qr_scanner_overlay.dart';
@@ -16,13 +15,13 @@ class QrCodeScanner extends StatefulWidget {
 
 class QrCodeScannerState extends State<QrCodeScanner>
     with SingleTickerProviderStateMixin, RouteAware {
-
   String? barcode;
 
   MobileScannerController controller = MobileScannerController(
-      torchEnabled: true, formats: [BarcodeFormat.qrCode],
-      facing: CameraFacing.back,
-      );
+    torchEnabled: false,
+    formats: [BarcodeFormat.qrCode],
+    facing: CameraFacing.back,
+  );
   bool isStarted = true;
 
   @override
@@ -46,25 +45,26 @@ class QrCodeScannerState extends State<QrCodeScanner>
             children: [
               MobileScanner(
                 controller: controller,
-                allowDuplicates: true,
+                allowDuplicates: false,
                 onDetect: (barcode, args) {
                   setState(() {
                     this.barcode = 'SCANNED';
-                    final data = get_ID(barcode.rawValue);
-                    if (data is GetPupilID){
-                      print("---------------RECEIVED DATA-------------");
-                      print(GetPupil().getPupil(data.pupil_id));
-                    } else if (data is KeyCreation){
+                    final data = getID(barcode.rawValue);
+                    if (data is GetPupilID) {
+                      Navigator.pushNamed(context, '/PupilCheck', arguments: data.pupilID);
+                    } else if (data is KeyCreation) {
                       print('KEY');
                     } else {
-                      if (data is ErrorNEW){
+                      if (data is ErrorNEW) {
                         print('${data.msg}, ${data.code}');
                       }
                     }
                   });
                 },
               ),
-              QRScannerOverlay(overlayColor: Colors.black.withOpacity(0.5),),
+              QRScannerOverlay(
+                overlayColor: Colors.black.withOpacity(0.5),
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(

@@ -1,13 +1,16 @@
 // fetch data from the internet
 
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'json_pupil.dart';
 
 class GetPupil {
-  getPupil(String pupil_id) async {
+  Future<Pupil> getPupil(String? pupilID) async {
     var client = http.Client();
 
     var urlRoute = 'http://192.168.2.92:5000/mobile/v1/get_pupil_mobile/';
-    var url = urlRoute + pupil_id;
+    var url = urlRoute + pupilID!;
 
     var uri = Uri.parse(url);
 
@@ -20,7 +23,14 @@ class GetPupil {
     print(response.body);
 
     if (response.statusCode == 200) {
-      return response.body;
+      var json = response.body;
+      Map<String, dynamic> map = jsonDecode(json);
+      return Pupil.fromJson(map);
+    } else {
+      throw Exception('Failed to load pupil');
     }
+
   }
 }
+
+

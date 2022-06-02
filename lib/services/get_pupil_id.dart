@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-get_ID(String? value_qr){
+getID(String? valueQR){
   try {
-    Map<String, dynamic> map = jsonDecode(value_qr!);
+    Map<String, dynamic> map = jsonDecode(valueQR!);
     if (map['type'] == 'pupil') {
       return GetPupilID(map['type'], map['data']['pupil_id']);
     } else if (map['type'] == 'key') {
@@ -16,15 +16,15 @@ get_ID(String? value_qr){
 
 class GetPupilID {
   final String type;
-  final String pupil_id;
-  GetPupilID(this.type, this.pupil_id);
+  final String pupilID;
+  GetPupilID(this.type, this.pupilID);
 }
 
 class KeyCreation {
   final String type;
-  final String costumerkey;
-  final String costumersec;
-  KeyCreation(this.type, this.costumersec, this.costumerkey);
+  final String costumerKey;
+  final String costumerSec;
+  KeyCreation(this.type, this.costumerSec, this.costumerKey);
 }
 
 class ErrorNEW {
