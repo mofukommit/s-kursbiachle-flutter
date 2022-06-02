@@ -13,9 +13,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  static final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder> {
         "/search" : (BuildContext context) => const Search(),
@@ -28,3 +31,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

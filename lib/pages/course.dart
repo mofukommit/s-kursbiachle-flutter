@@ -16,7 +16,6 @@ class CourseState extends State<Course> {
   @override
   void initState() {
     super.initState();
-
     //fetch data from API
     getData();
   }

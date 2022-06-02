@@ -1,4 +1,4 @@
-// fetch data from internet
+// fetch data from the internet
 
 import 'json_courses.dart';
 import 'package:http/http.dart' as http;

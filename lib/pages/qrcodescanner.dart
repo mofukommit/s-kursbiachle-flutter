@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:skursbiachle/services/get_pupil.dart';
 import 'package:skursbiachle/services/get_pupil_id.dart';
 import 'package:skursbiachle/widgets/qr_scanner_overlay.dart';
 
@@ -14,14 +15,14 @@ class QrCodeScanner extends StatefulWidget {
 }
 
 class QrCodeScannerState extends State<QrCodeScanner>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, RouteAware {
+
   String? barcode;
 
   MobileScannerController controller = MobileScannerController(
-      torchEnabled: false, formats: [BarcodeFormat.qrCode]
-      // facing: CameraFacing.front,
+      torchEnabled: true, formats: [BarcodeFormat.qrCode],
+      facing: CameraFacing.back,
       );
-
   bool isStarted = true;
 
   @override
@@ -45,15 +46,21 @@ class QrCodeScannerState extends State<QrCodeScanner>
             children: [
               MobileScanner(
                 controller: controller,
-                allowDuplicates: false,
-                // controller: MobileScannerController(
-                //   torchEnabled: true,
-                //   facing: CameraFacing.front,
-                // ),
+                allowDuplicates: true,
                 onDetect: (barcode, args) {
                   setState(() {
-                    this.barcode = barcode.rawValue;
-                    GetPupilID().getPupilID(jsonEncode(barcode.rawValue));
+                    this.barcode = 'SCANNED';
+                    final data = get_ID(barcode.rawValue);
+                    if (data is GetPupilID){
+                      print("---------------RECEIVED DATA-------------");
+                      print(GetPupil().getPupil(data.pupil_id));
+                    } else if (data is KeyCreation){
+                      print('KEY');
+                    } else {
+                      if (data is ErrorNEW){
+                        print('${data.msg}, ${data.code}');
+                      }
+                    }
                   });
                 },
               ),
