@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
       // start app on page initialRoute
-      initialRoute: '/QrCodeScanner',
+      initialRoute: '/',
       routes: <String, WidgetBuilder> {
         "/search" : (BuildContext context) => const Search(),
         "/course" : (BuildContext context) => const Course(),

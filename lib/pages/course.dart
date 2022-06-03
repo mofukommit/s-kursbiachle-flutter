@@ -54,7 +54,7 @@ class CourseState extends State<Course> {
                     width: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey[300],
+                      color: Colors.orange,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -72,7 +72,7 @@ class CourseState extends State<Course> {
                           ),
                         ),
                         Text(
-                          posts![index].groupId,
+                          "Beginn: ${posts![index].startTime} Uhr",
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),

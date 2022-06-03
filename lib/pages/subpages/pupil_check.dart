@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:skursbiachle/services/get_pupil.dart';
 import 'package:skursbiachle/services/json_pupil.dart';
 
-
 class PupilCheck extends StatefulWidget {
   final Map<String, dynamic>? args;
 
@@ -15,10 +14,10 @@ class PupilCheck extends StatefulWidget {
 }
 
 class PupilCheckState extends State<PupilCheck> {
-   late Pupil? pupil;
-   var isLoaded = false;
+  late Pupil? pupil;
+  var isLoaded = false;
 
-   @override
+  @override
   void initState() {
     super.initState();
     //fetch data from API
@@ -48,31 +47,17 @@ class PupilCheckState extends State<PupilCheck> {
         centerTitle: true,
       ),
       body: Visibility(
-        visible: isLoaded,
-        replacement: const Center(
-          child: CircularProgressIndicator(),
-        ),
-        child: PageView.builder(
-          itemBuilder: (context, index){
-            return Container(
-              child: Text(pupil!.sname),
-            );
-          },
-        )
-
-        /* child: FutureBuilder<Pupil>(
-          future: futurePupil,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data!.pId);
-            }else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
-            return const CircularProgressIndicator();
-          },
-        ), */
-
-      ),
+          visible: isLoaded,
+          replacement: const Center(
+            child: CircularProgressIndicator(),
+          ),
+          child: PageView.builder(
+            itemBuilder: (context, index) {
+              return Container(
+                child: Text(pupil!.sname),
+              );
+            },
+          )),
     );
   }
 }
