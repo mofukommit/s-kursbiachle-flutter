@@ -50,12 +50,12 @@ class PupilCheckState extends State<PupilCheck> {
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  SizedBox(height: 100),
+                  const SizedBox(height: 100),
                   SizedBox(
                       height: 180,
                       child: Row(
                         children: [
-                          Container(width: 50, height: 100),
+                          const SizedBox(width: 50, height: 100),
                           Expanded(
                             child: Container(
                                 alignment: Alignment.center,
