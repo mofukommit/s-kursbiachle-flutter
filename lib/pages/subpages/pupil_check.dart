@@ -35,15 +35,10 @@ class PupilCheckState extends State<PupilCheck> {
 
   @override
   Widget build(BuildContext context) {
-    // Extract the arguments from the current ModalRoute
-    // final String pupilID = ModalRoute.of(context)!.settings.arguments as String;
-    // print(GetPupil().getPupil(pupilID));
-    // print(this.futurePupil);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.kommit,
-        title: const Text("Testseite"),
+        title: const Text("Schüler"),
         centerTitle: true,
       ),
       body: Visibility(
@@ -53,8 +48,66 @@ class PupilCheckState extends State<PupilCheck> {
           ),
           child: PageView.builder(
             itemBuilder: (context, index) {
-              return Container(
-                child: Text(pupil!.sname),
+              return Column(
+                children: [
+                  SizedBox(height: 100),
+                  SizedBox(
+                      height: 180,
+                      child: Row(
+                        children: [
+                          Container(width: 50, height: 100),
+                          Expanded(
+                            child: Container(
+                                alignment: Alignment.center,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${pupil!.fname} ${pupil!.sname}",
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      "Level: Anfänger",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      "Kurs: Zwergerl G2",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            width: 50,
+                          )
+                        ],
+                      )),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.kommit,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Bestätigen'),
+                    ),
+                  )
+                ],
               );
             },
           )),
