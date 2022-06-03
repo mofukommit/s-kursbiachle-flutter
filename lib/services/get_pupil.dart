@@ -9,8 +9,8 @@ class GetPupil {
   Future<Pupil> getPupil(String? pupilID) async {
     var client = http.Client();
 
-    var urlRoute = 'http://192.168.1.55:5000/mobile/v1/get_pupil_mobile/';
-    // var urlRoute = 'http://192.168.2.92:5000/mobile/v1/get_pupil_mobile/';
+    // var urlRoute = 'http://192.168.1.55:5000/mobile/v1/get_pupil_mobile/';
+    var urlRoute = 'http://192.168.2.92:5000/mobile/v1/get_pupil_mobile/';
 
     var url = urlRoute + pupilID!;
 
