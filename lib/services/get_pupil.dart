@@ -1,7 +1,5 @@
 // fetch data from the internet
 
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'json_pupil.dart';
 
