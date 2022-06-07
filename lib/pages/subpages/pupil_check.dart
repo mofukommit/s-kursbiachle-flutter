@@ -97,15 +97,33 @@ class PupilCheckState extends State<PupilCheck> {
                         ],
                       )),
                   Center(
+                    child: WillPopScope(
+                      onWillPop: () async {
+                        Navigator.pop(context, true);
+                        return true;
+                      },
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                          primary: Colors.kommit,
+                          ),
+                          onPressed: (){
+                            Navigator.pop(context, true);
+                        },
+                          child: const Text('Bestätigen'),
+                    ),
+                    )
+                    /*
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Colors.kommit,
                       ),
                       onPressed: () {
-                        Navigator.pop(context, false);
+                        Navigator.pop(context, true);
+                        return true;
                       },
                       child: const Text('Bestätigen'),
                     ),
+                    */
                   )
                 ],
               );

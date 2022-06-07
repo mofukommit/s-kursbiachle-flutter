@@ -7,7 +7,7 @@ class GetCourses {
   Future<List<Courses>?> getPosts() async {
     var client = http.Client();
 
-    var uri = Uri.parse('http://192.168.1.55:5000/mobile/v1/get_courses');
+    var uri = Uri.parse('http://192.168.2.92:5000/mobile/v1/get_courses');
     // var uri = Uri.parse('http://192.168.2.92:5000/mobile/v1/get_courses');
 
     var response = await client.get(uri, headers: {

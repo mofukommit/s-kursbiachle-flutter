@@ -9,10 +9,12 @@ class QrCodeScanner extends StatefulWidget {
 
   @override
   QrCodeScannerState createState() => QrCodeScannerState();
+
 }
 
 class QrCodeScannerState extends State<QrCodeScanner>
     with SingleTickerProviderStateMixin, RouteAware {
+
   String? barcode;
 
   MobileScannerController controller = MobileScannerController(
@@ -20,7 +22,16 @@ class QrCodeScannerState extends State<QrCodeScanner>
     formats: [BarcodeFormat.qrCode],
     facing: CameraFacing.back,
   );
+
   bool isStarted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      isStarted = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +54,42 @@ class QrCodeScannerState extends State<QrCodeScanner>
             children: [
               MobileScanner(
                 controller: controller,
-                allowDuplicates: false,
-                onDetect: (barcode, args) {
-                  setState(() {
-                    this.barcode = 'SCANNED';
-                    final data = getID(barcode.rawValue);
-                    if (data is GetPupilID) {
-                      Navigator.pushNamed(context, '/PupilCheck', arguments: {
-                        'pupilID': data.pupilID,
+                allowDuplicates: true,
+                onDetect: (barcode, args) async {
+                  var result;
+                  if (this.barcode != barcode.rawValue) {
+                    this.barcode = barcode.rawValue;
+                    try {
+                      await controller.stop();
+                      setState(() {
+                        final data = getID(barcode.rawValue);
+                        if (data is GetPupilID) {
+                          result = Navigator.pushNamed(
+                              context, '/PupilCheck', arguments: {
+                            'pupilID': data.pupilID,
+                          });
+
+                          this.barcode = 'SCAN!';
+                        } else if (data is KeyCreation) {
+                          print('KEY');
+                        } else {
+                          if (data is ErrorNEW) {
+                            print('${data.msg}, ${data.code}');
+                          }
+                        }
                       });
-                    } else if (data is KeyCreation) {
-                      print('KEY');
-                    } else {
-                      if (data is ErrorNEW) {
-                        print('${data.msg}, ${data.code}');
-                      }
+                    } on Exception catch (e) {
+                      print(e);
+                    };
+                    print('${await result} #######################################');
+
+                    if (await result == true) {
+                      controller.start();
+                      isStarted = false;
+                      this.barcode = 'SCAN!';
                     }
-                  });
-                },
+                  }
+                }
               ),
               QRScannerOverlay(
                 overlayColor: Colors.black.withOpacity(0.5),

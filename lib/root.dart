@@ -1,5 +1,6 @@
 // BottomNavigationBar
 import 'package:flutter/material.dart';
+// Pages
 import 'pages/closing.dart';
 import 'pages/course.dart';
 import 'pages/qrcodescanner.dart';
