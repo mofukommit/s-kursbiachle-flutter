@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import 'package:skursbiachle/services/get_pupil.dart';
 import 'package:skursbiachle/services/get_pupil_id.dart';
 import 'package:skursbiachle/widgets/qr_scanner_overlay.dart';
-
-import 'subpages/pupil_check.dart';
 
 class QrCodeScanner extends StatefulWidget {
   const QrCodeScanner({Key? key}) : super(key: key);
@@ -24,7 +20,7 @@ class QrCodeScannerState extends State<QrCodeScanner>
     formats: [BarcodeFormat.qrCode],
     facing: CameraFacing.back,
   );
-  bool isStarted = true;
+  bool isStarted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +49,9 @@ class QrCodeScannerState extends State<QrCodeScanner>
                     this.barcode = 'SCANNED';
                     final data = getID(barcode.rawValue);
                     if (data is GetPupilID) {
-                      Navigator.pushNamed(context, '/PupilCheck', arguments: {'pupilID' : data.pupilID,});
+                      Navigator.pushNamed(context, '/PupilCheck', arguments: {
+                        'pupilID': data.pupilID,
+                      });
                     } else if (data is KeyCreation) {
                       print('KEY');
                     } else {
@@ -76,6 +74,38 @@ class QrCodeScannerState extends State<QrCodeScanner>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      IconButton(
+                        color: Colors.white,
+                        icon: ValueListenableBuilder(
+                          valueListenable: controller.cameraFacingState,
+                          builder: (context, state, child) {
+                            if (state == null) {
+                              return const Icon(Icons.camera_front);
+                            }
+                            switch (state as CameraFacing) {
+                              case CameraFacing.front:
+                                return const Icon(Icons.camera_front);
+                              case CameraFacing.back:
+                                return const Icon(Icons.camera_rear);
+                            }
+                          },
+                        ),
+                        iconSize: 32.0,
+                        onPressed: () => controller.switchCamera(),
+                      ),
+                      Center(
+                        child: IconButton(
+                          color: Colors.white,
+                          icon: isStarted
+                              ? const Icon(Icons.stop)
+                              : const Icon(Icons.play_arrow),
+                          iconSize: 32.0,
+                          onPressed: () => setState(() {
+                            isStarted ? controller.stop() : controller.start();
+                            isStarted = !isStarted;
+                          }),
+                        ),
+                      ),
                       IconButton(
                         color: Colors.white,
                         icon: ValueListenableBuilder(
@@ -104,53 +134,8 @@ class QrCodeScannerState extends State<QrCodeScanner>
                         iconSize: 32.0,
                         onPressed: () => controller.toggleTorch(),
                       ),
-                      IconButton(
-                        color: Colors.white,
-                        icon: isStarted
-                            ? const Icon(Icons.stop)
-                            : const Icon(Icons.play_arrow),
-                        iconSize: 32.0,
-                        onPressed: () => setState(() {
-                          isStarted ? controller.stop() : controller.start();
-                          isStarted = !isStarted;
-                        }),
-                      ),
-                      Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 200,
-                          height: 50,
-                          child: FittedBox(
-                            child: Text(
-                              'Scan!',
-                              overflow: TextOverflow.fade,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        color: Colors.white,
-                        icon: ValueListenableBuilder(
-                          valueListenable: controller.cameraFacingState,
-                          builder: (context, state, child) {
-                            if (state == null) {
-                              return const Icon(Icons.camera_front);
-                            }
-                            switch (state as CameraFacing) {
-                              case CameraFacing.front:
-                                return const Icon(Icons.camera_front);
-                              case CameraFacing.back:
-                                return const Icon(Icons.camera_rear);
-                            }
-                          },
-                        ),
-                        iconSize: 32.0,
-                        onPressed: () => controller.switchCamera(),
-                      ),
-                      IconButton(
+
+                      /* IconButton(
                         color: Colors.white,
                         icon: const Icon(Icons.image),
                         iconSize: 32.0,
@@ -180,7 +165,7 @@ class QrCodeScannerState extends State<QrCodeScanner>
                             }
                           }
                         },
-                      ),
+                      ), */
                     ],
                   ),
                 ),

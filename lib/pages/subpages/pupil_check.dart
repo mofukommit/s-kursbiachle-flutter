@@ -102,7 +102,7 @@ class PupilCheckState extends State<PupilCheck> {
                         primary: Colors.kommit,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context, false);
                       },
                       child: const Text('Bestätigen'),
                     ),
