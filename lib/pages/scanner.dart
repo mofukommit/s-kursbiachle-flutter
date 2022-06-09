@@ -57,7 +57,6 @@ class QrCodeScannerState extends State<QrCodeScanner>
                     dynamic result;
                     if (this.barcode != barcode.rawValue) {
                       this.barcode = barcode.rawValue;
-
                       try {
                         await controller.stop();
                         setState(() {
@@ -78,7 +77,6 @@ class QrCodeScannerState extends State<QrCodeScanner>
                       } on Exception catch (e) {
                         print(e);
                       }
-
                       print('${await result} #######################################');
                       if (await result == true) {
                         controller.start();
@@ -91,6 +89,7 @@ class QrCodeScannerState extends State<QrCodeScanner>
                 overlayColor: Colors.black.withOpacity(0.5),
               ),
               Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Align(
                     alignment: Alignment.bottomCenter,

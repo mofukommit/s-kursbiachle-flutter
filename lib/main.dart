@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       // start app on page initialRoute
       initialRoute: '/',
       routes: <String, WidgetBuilder> {
-        "/search" : (BuildContext context) => Search(),
+        "/search" : (BuildContext context) => const Search(),
         "/course" : (BuildContext context) => const Course(),
         "/QrCodeScanner": (BuildContext context) => const QrCodeScanner(),
         "/closing" : (BuildContext context) => const Closing(),
