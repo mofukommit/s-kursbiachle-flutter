@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // Pages
 import 'pages/closing.dart';
 import 'pages/course.dart';
-import 'pages/qrcodescanner.dart';
+import 'pages/scanner.dart';
 import 'pages/search.dart';
 import 'pages/settings.dart';
 
@@ -22,12 +22,12 @@ class _RootWidgetState extends State<RootWidget> {
     return Scaffold(
       body: IndexedStack(
           index: _currentIndex,
-          children: const [
-            Course(),
+          children: [
+            const Course(),
             Search(),
-            QrCodeScanner(),
-            Closing(),
-            Settings(),
+            const QrCodeScanner(),
+            const Closing(),
+            const Settings(),
           ]),
       bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {

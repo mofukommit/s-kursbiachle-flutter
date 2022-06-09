@@ -7,8 +7,8 @@ class GetPupil {
   Future<Pupil> getPupil(String? pupilID) async {
     var client = http.Client();
 
-    var urlRoute = 'http://192.168.2.92:5000/mobile/v1/get_pupil_mobile/';
-    // var urlRoute = 'http://192.168.1.55:5000/mobile/v1/get_pupil_mobile/';
+    // var urlRoute = 'http://192.168.2.92:5000/mobile/v1/get_pupil_mobile/';
+    var urlRoute = 'http://192.168.1.55:5000/mobile/v1/get_pupil_mobile/';
 
     var url = urlRoute + pupilID!;
 
@@ -20,7 +20,7 @@ class GetPupil {
       'costumerkey':
           'd5df95842c16f1fc6324bbce7f93a40aeee0ad8e9af86ad07b061f26f6ac023e'
     });
-    print(response.body);
+    // print(response.body);
 
     if (response.statusCode == 200) {
       var json = response.body;

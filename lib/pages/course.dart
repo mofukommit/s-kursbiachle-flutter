@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skursbiachle/services/get_courses.dart';
+import '../services/get_courses.dart';
 import '../services/json_courses.dart';
 
 class Course extends StatefulWidget {

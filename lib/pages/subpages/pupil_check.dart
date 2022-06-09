@@ -4,7 +4,6 @@ import 'package:skursbiachle/services/json_pupil.dart';
 
 class PupilCheck extends StatefulWidget {
   final Map<String, dynamic>? args;
-
   const PupilCheck(this.args, {Key? key}) : super(key: key);
 
   static const routeName = '/PupilCheck';
@@ -49,8 +48,8 @@ class PupilCheckState extends State<PupilCheck> {
           child: PageView.builder(
             itemBuilder: (context, index) {
               return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 100),
                   SizedBox(
                       height: 180,
                       child: Row(
@@ -58,7 +57,6 @@ class PupilCheckState extends State<PupilCheck> {
                           const SizedBox(width: 50, height: 100),
                           Expanded(
                             child: Container(
-                                alignment: Alignment.center,
                                 height: 200,
                                 decoration: BoxDecoration(
                                   color: Colors.blueGrey.withOpacity(0.3),
@@ -91,11 +89,10 @@ class PupilCheckState extends State<PupilCheck> {
                                   ],
                                 )),
                           ),
-                          Container(
-                            width: 50,
-                          )
+                          const SizedBox(width: 50, height: 100),
                         ],
                       )),
+                  const SizedBox(height: 200),
                   Center(
                     child: WillPopScope(
                       onWillPop: () async {
@@ -110,21 +107,9 @@ class PupilCheckState extends State<PupilCheck> {
                             Navigator.pop(context, true);
                         },
                           child: const Text('Bestätigen'),
-                    ),
-                    )
-                    /*
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.kommit,
                       ),
-                      onPressed: () {
-                        Navigator.pop(context, true);
-                        return true;
-                      },
-                      child: const Text('Bestätigen'),
-                    ),
-                    */
-                  )
+                    )
+                  ),
                 ],
               );
             },
