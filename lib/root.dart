@@ -22,12 +22,12 @@ class _RootWidgetState extends State<RootWidget> {
     return Scaffold(
       body: IndexedStack(
           index: _currentIndex,
-          children: [
-            const Course(),
+          children: const [
+            Course(),
             Search(),
-            const QrCodeScanner(),
-            const Closing(),
-            const Settings(),
+            QrCodeScanner(),
+            Closing(),
+            Settings(),
           ]),
       bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {

@@ -1,6 +1,5 @@
-// Mapping
-//
 // To parse this JSON data, do
+//
 //     final courses = coursesFromJson(jsonString);
 
 import 'dart:convert';

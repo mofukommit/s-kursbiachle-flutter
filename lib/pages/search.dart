@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../services/get_pupil_by_name.dart';
+import '../services/json_pupil_name.dart';
+
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
@@ -10,10 +13,37 @@ class Search extends StatefulWidget {
 class SearchState extends State<Search> {
   final _formKey = GlobalKey<FormState>();
 
+  var fname = "none";
+  var sname = "none";
+
+  TextEditingController fnameController = TextEditingController(text: "");
+  TextEditingController snameController = TextEditingController(text: "");
+
+  List<Pupilsearch>? posts;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    //fetch data from API
+
+  }
+
+  getPupils() async {
+    posts = await GetPupils().getPosts(fname, sname);
+    if (posts != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
+  /*
   //Dropdownmenü
   String selectedValue = "Kurs";
   List<DropdownMenuItem<String>> get dropdownItems{
     List<DropdownMenuItem<String>> menuItems = [
+      // Korrekte Namen verwenden
       const DropdownMenuItem(value: "Kurs", child: Text("Kurs")),
       const DropdownMenuItem(value: "Zwergel-K", child: Text("Zwergel-K")),
       const DropdownMenuItem(value: "Zwergerl-G1", child: Text("Zwergerl-G1")),
@@ -21,6 +51,7 @@ class SearchState extends State<Search> {
     ];
     return menuItems;
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -40,29 +71,25 @@ class SearchState extends State<Search> {
                   Row(
                     children: <Widget>[
                       Flexible(
-                          child: Column(
-                            children: <Widget>[
-                              TextFormField(
-                                keyboardType: TextInputType.text,
-                                autocorrect: false,
-                                decoration: const InputDecoration(
-                                  labelText: 'Vorname',
-                                  border: OutlineInputBorder(),
-                                ),
-                                validator: (value) {
+                          child: TextFormField(
+                            controller: fnameController,
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            decoration: const InputDecoration(
+                              labelText: 'Vorname',
+                              border: OutlineInputBorder(),
+                            ),
+                            /* validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Bitte einen Namen eintragen';
                                   }
                                   return null;
-                                },
-                              )
-                            ],
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                                }, */
+                          )),
+                      const SizedBox(width: 10,),
                       Expanded(
                         child: TextFormField(
+                          controller: snameController,
                           keyboardType: TextInputType.text,
                           decoration: const InputDecoration(
                             labelText: 'Nachname',
@@ -73,6 +100,7 @@ class SearchState extends State<Search> {
                     ],
                   ),
                   const SizedBox(height: 10),
+                  /*
                   DropdownButtonFormField(
                     decoration: const InputDecoration(
                       labelText: 'Kurs',
@@ -88,6 +116,7 @@ class SearchState extends State<Search> {
                     items: dropdownItems,
                   ),
                   const SizedBox(height: 20),
+                  */
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -97,21 +126,25 @@ class SearchState extends State<Search> {
                             textStyle: const TextStyle(color: Colors.white)),
                         onPressed: () {
                           // reset() setzt alle Felder wieder auf den Initialwert zurück
+                          // Todo: Fehler - Listenansicht wird beim Löschen nicht ebenfalls entfernt
                           _formKey.currentState!.reset();
+                          fnameController.text = "";
+                          snameController.text = "";
+                          GetPupils();
                         },
                         child: const Text('Löschen'),
                       ),
-                      const SizedBox(width: 25),
+                      const SizedBox(width: 10),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.kommit,
                             textStyle: const TextStyle(color: Colors.white)),
                         onPressed: () {
-                          // Wenn alle Validatoren der Felder des Formulars gültig sind.
-                          // Todo: Min 1 Validator = true, aber egal welcher
                           if (_formKey.currentState!.validate()) {
-                            print(
-                                "Formular ist gültig und kann verarbeitet werden");
+                            fname = fnameController.text;
+                            sname = snameController.text;
+                            getPupils();
+                            print("Formular ist gültig und kann verarbeitet werden");
                           } else {
                             print("Formular ist nicht gültig");
                           }
@@ -121,11 +154,50 @@ class SearchState extends State<Search> {
                     ],
                   ),
                   const SizedBox(height: 29),
-                  // Todo: Visibility & isLoaded für Suchergebnisse verwenden
-                  Container(
-                    color: Colors.blueGrey,
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 0.80,
-                    child: const Text("Hier wird das Ergebnis gelistet. Contenthintergrund vorläufig farbig zur Visualisierung des Platzbedarfs."),
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Visibility(
+                      visible: isLoaded,
+                      // Todo: Fehler - Ladescreen wird angezeigt, noch bevor Suche eingegeben wurde
+                      replacement: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      child: ListView.builder(
+                        itemCount: posts?.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${index.abs()+1}. ${posts![index].fname} ${posts![index].sname}",
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5,)
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   )
                 ],
               ),

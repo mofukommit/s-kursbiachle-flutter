@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:skursbiachle/services/get_pupil.dart';
-import 'package:skursbiachle/services/json_pupil.dart';
+import 'package:skursbiachle/services/get_pupil_by_qr.dart';
+import 'package:skursbiachle/services/json_pupil_qr.dart';
 
 class PupilCheck extends StatefulWidget {
   final Map<String, dynamic>? args;

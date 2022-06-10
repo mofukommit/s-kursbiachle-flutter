@@ -1,7 +1,7 @@
 // fetch data from the internet
 
 import 'package:http/http.dart' as http;
-import 'json_pupil.dart';
+import 'json_pupil_qr.dart';
 
 class GetPupil {
   Future<Pupil> getPupil(String? pupilID) async {
