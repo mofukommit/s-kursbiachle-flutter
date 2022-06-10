@@ -11,6 +11,8 @@ class Search extends StatefulWidget {
 }
 
 class SearchState extends State<Search> {
+  List<Pupilsearch>? posts;
+
   final _formKey = GlobalKey<FormState>();
 
   var fname = "none";
@@ -19,8 +21,8 @@ class SearchState extends State<Search> {
   TextEditingController fnameController = TextEditingController(text: "");
   TextEditingController snameController = TextEditingController(text: "");
 
-  List<Pupilsearch>? posts;
   var isLoaded = false;
+  var isSearched = false;
 
   @override
   void initState() {
@@ -85,7 +87,8 @@ class SearchState extends State<Search> {
                                   }
                                   return null;
                                 }, */
-                          )),
+                          )
+                      ),
                       const SizedBox(width: 10,),
                       Expanded(
                         child: TextFormField(
@@ -119,6 +122,7 @@ class SearchState extends State<Search> {
                   */
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -126,11 +130,15 @@ class SearchState extends State<Search> {
                             textStyle: const TextStyle(color: Colors.white)),
                         onPressed: () {
                           // reset() setzt alle Felder wieder auf den Initialwert zurück
-                          // Todo: Fehler - Listenansicht wird beim Löschen nicht ebenfalls entfernt
                           _formKey.currentState!.reset();
+                          // Löscht Inputfelder
                           fnameController.text = "";
                           snameController.text = "";
-                          GetPupils();
+                          // Löscht beschriebene Parameter
+                          fname = "";
+                          sname = "";
+                          // Löscht bereits gelistete Schüler
+                          getPupils();
                         },
                         child: const Text('Löschen'),
                       ),
@@ -140,9 +148,12 @@ class SearchState extends State<Search> {
                             primary: Colors.kommit,
                             textStyle: const TextStyle(color: Colors.white)),
                         onPressed: () {
+                          // Todo Validation für Inputfelder hinzufügen
                           if (_formKey.currentState!.validate()) {
                             fname = fnameController.text;
                             sname = snameController.text;
+                            isLoaded = false;
+                            isSearched = true;
                             getPupils();
                             print("Formular ist gültig und kann verarbeitet werden");
                           } else {
@@ -157,45 +168,61 @@ class SearchState extends State<Search> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.80,
                     height: MediaQuery.of(context).size.height * 0.5,
+                    // Ladebildschirm wird erst angezeigt,
+                    // wenn auch zu suchen angefangen wurde
                     child: Visibility(
-                      visible: isLoaded,
-                      // Todo: Fehler - Ladescreen wird angezeigt, noch bevor Suche eingegeben wurde
-                      replacement: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      child: ListView.builder(
-                        itemCount: posts?.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blueGrey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                      visible: isSearched,
+                      child: Visibility(
+                        visible: isLoaded,
+                        replacement: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              itemCount: posts?.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueGrey.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  padding: const EdgeInsets.all(16),
+                                  child: Row(
                                     children: [
-                                      Text(
-                                        "${index.abs()+1}. ${posts![index].fname} ${posts![index].sname}",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.normal,
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                              Navigator.pushNamed(context, '/PupilCheck',
+                                                  arguments: {
+                                                    'pupilID': posts![index].pupilId,
+                                                  });
+                                          },
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${index.abs()+1}. ${posts![index].fname} ${posts![index].sname}",
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5,),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                      const SizedBox(height: 5,)
                                     ],
                                   ),
-                                ),
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
+                          ],
+                        ),
                       ),
                     ),
                   )
