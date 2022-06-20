@@ -25,7 +25,7 @@ class _RootWidgetState extends State<RootWidget> {
           children: const [
             Course(),
             Search(),
-            QrCodeScanner(),
+            Scanner(),
             Closing(),
             Settings(),
           ]),

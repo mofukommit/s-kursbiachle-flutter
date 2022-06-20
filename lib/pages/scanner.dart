@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:skursbiachle/model/teacher.dart';
 
 import 'package:skursbiachle/services/get_pupil_id.dart';
 import 'package:skursbiachle/widgets/qr_scanner_overlay.dart';
 
-class QrCodeScanner extends StatefulWidget {
-  const QrCodeScanner({Key? key}) : super(key: key);
+import '../database/teacher_database.dart';
+
+class Scanner extends StatefulWidget {
+  const Scanner({Key? key}) : super(key: key);
 
   @override
-  QrCodeScannerState createState() => QrCodeScannerState();
+  ScannerState createState() => ScannerState();
 }
 
-class QrCodeScannerState extends State<QrCodeScanner>
+class ScannerState extends State<Scanner>
     with SingleTickerProviderStateMixin, RouteAware {
   String? barcode;
 
@@ -58,16 +61,18 @@ class QrCodeScannerState extends State<QrCodeScanner>
                     if (this.barcode != barcode.rawValue) {
                       this.barcode = barcode.rawValue;
                       try {
+                        final data = await getID(barcode.rawValue);
                         await controller.stop();
                         setState(() {
-                          final data = getID(barcode.rawValue);
                           if (data is GetPupilID) {
-                            result = Navigator.pushNamed(context, '/PupilCheck',
+                            result = Navigator.pushNamed(context, '/pupilCheck',
                                 arguments: {
                                   'pupilID': data.pupilID,
                                 });
                           } else if (data is KeyCreation) {
-                            print('KEY');
+                            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            print(data.url);
+                            writeKeys(data.costumerKey, data.costumerSec, data.url);
                           } else {
                             if (data is ErrorNEW) {
                               print('${data.msg}, ${data.code}');
@@ -172,4 +177,16 @@ class QrCodeScannerState extends State<QrCodeScanner>
       ),
     );
   }
+
+  Future writeKeys(costumerKey, costumerSec, url) async {
+    final key = KeyDB(
+      id: 1,
+      costumerKey: costumerKey,
+      costumerSec: costumerSec,
+      url: url
+    );
+
+    await KeyDatabase.instance.create(key);
+  }
 }
+

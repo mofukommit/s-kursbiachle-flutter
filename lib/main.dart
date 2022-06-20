@@ -26,12 +26,14 @@ class MyApp extends StatelessWidget {
       // start app on page initialRoute
       initialRoute: '/',
       routes: <String, WidgetBuilder> {
+        // Navpages
         "/search" : (BuildContext context) => const Search(),
         "/course" : (BuildContext context) => const Course(),
-        "/QrCodeScanner": (BuildContext context) => const QrCodeScanner(),
+        "/scanner": (BuildContext context) => const Scanner(),
         "/closing" : (BuildContext context) => const Closing(),
         "/settings": (BuildContext context) => const Settings(),
-        "/PupilCheck": (context) => PupilCheck(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
+        // Subpages
+        "/pupilCheck": (context) => PupilCheck(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         },
       home: const RootWidget(),
     );

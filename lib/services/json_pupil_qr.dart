@@ -35,7 +35,7 @@ class Pupil {
     pId: json["p_id"],
     fname: json["fname"],
     sname: json["sname"],
-    age: json["age"],
+    age: int.parse(json["age"]),
     tel: json["tel"],
     prefTeach: json["pref_teach"],
     level: json["level"],
