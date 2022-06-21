@@ -38,7 +38,7 @@ class CourseState extends State<Course> {
     late KeyDB key;
     try{
       key = await KeyDatabase.instance.readKey(1);
-    }catch (_) {
+    }on Exception {
       return false;
     }
     if (key.costumerKey != ''){
@@ -67,12 +67,13 @@ class CourseState extends State<Course> {
             getData();
           }
       });
+    } else {
+      setState(() => posts?.clear());
+      List<Courses>? new_courses = await GetCourses().getPosts();
+      setState(() {
+        posts = new_courses;
+      });
     }
-    setState(() => posts?.clear());
-    List<Courses>? new_courses = await GetCourses().getPosts();
-    setState(() {
-      posts = new_courses;
-    });
   }
 
   @override
@@ -100,17 +101,46 @@ class CourseState extends State<Course> {
         child: ListView.builder(
           physics:AlwaysScrollableScrollPhysics(),
           itemCount: 1,
+          padding: const EdgeInsets.only(top: 50),
           itemBuilder: (BuildContext context, int index) {
-            return const Center(
-              child: Text(
-                'Bitte Authentifizieren Sie sich bei Ihrer Skischule \n '
-                    'Einfach den QR-Code abscannen, \n '
-                    'welcher für Sie erstellt wurde',
-                textDirection: TextDirection.ltr,
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.black87,
+            return Center(
+              child: Card(
+                margin: EdgeInsets.all(20),
+                elevation: 8,
+                shadowColor: Colors.kommit,
+                child: SizedBox(
+                  height: 500,
+                  child: Container(
+                    padding: EdgeInsets.only(left:15, bottom: 50, right: 20, top:50),
+
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left:0, bottom: 10, right: 0, top:0),
+                          child: const Center(
+                              child: Text(
+                                  'Bitte Authorisieren Sie sich bei Ihrer Skischule.\n'
+                                      'Nur so können Sie Ihre Daten einsehen und bearbeiten. \n\n'
+                                      'Scannen Sie bei Ihrer Skischulverwaltung einfach Ihren persönlichen QR-Code ein!',
+                                textAlign: TextAlign.center,
+                                textScaleFactor: 2.0,
+                              )
+                          ),
+                        ),
+                        Container(
+                          child: const Center(
+                              child: Text(
+                                'Nachdem Sie diesen eingescannt haben, können Sie diese Seite mit einem Wisch von oben nach unten aktualisieren',
+                                textAlign: TextAlign.center,
+                                textScaleFactor: 1.0,
+                              )
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+
               ),
             );
           },
@@ -131,7 +161,7 @@ class CourseState extends State<Course> {
         replacement: const Center(
           child: CircularProgressIndicator(),
         ),
-        child: posts!.isEmpty
+        child: posts?.length == 0
         ? const Center(child: CircularProgressIndicator(),)
         : RefreshIndicator(
           onRefresh: refresh,

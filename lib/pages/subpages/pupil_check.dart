@@ -194,7 +194,9 @@ class PupilCheckState extends State<PupilCheck> {
                                   primary: Colors.green,
                                   textStyle:
                                       const TextStyle(color: Colors.white)),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context, true);
+                              },
                               child: const Text('Annehmen',
                                   style: TextStyle(fontSize: 20)),
                             ),

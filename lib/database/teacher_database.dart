@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../services/get_pupil_id.dart';
+import '../../services/scan_qr_get_data.dart';
 import '../model/teacher.dart';
 
 

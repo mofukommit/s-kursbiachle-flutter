@@ -1,4 +1,4 @@
-import 'package:skursbiachle/services/get_pupil_id.dart';
+import 'package:skursbiachle/services/scan_qr_get_data.dart';
 
 final String tableTeacher = 'keys';
 

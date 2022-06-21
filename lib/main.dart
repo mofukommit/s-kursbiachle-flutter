@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:skursbiachle/pages/subpages/authorized.dart';
 import 'package:skursbiachle/pages/subpages/pupil_detail.dart';
 import 'package:skursbiachle/root.dart';
 // Pages
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         "/pupilCheck": (context) => PupilCheck(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         "/courseDetails": (context) => CourseDetails(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         "/pupilDetail": (context) => PupilDetail(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
-
+        "/authorized": (context) => Authorized(),
         },
       home: const RootWidget(),
     );

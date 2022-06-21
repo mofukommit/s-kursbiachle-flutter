@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:skursbiachle/model/teacher.dart';
 
-import 'package:skursbiachle/services/get_pupil_id.dart';
+import 'package:skursbiachle/services/scan_qr_get_data.dart';
 import 'package:skursbiachle/widgets/qr_scanner_overlay.dart';
 
 import '../database/teacher_database.dart';
@@ -72,7 +72,8 @@ class ScannerState extends State<Scanner>
                           } else if (data is KeyCreation) {
                             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                             print(data.url);
-                            writeKeys(data.costumerKey, data.costumerSec, data.url);
+                            // writeKeys(data.costumerKey, data.costumerSec, data.url);
+                            result = Navigator.pushNamed(context, '/authorized');
                           } else {
                             if (data is ErrorNEW) {
                               print('${data.msg}, ${data.code}');
