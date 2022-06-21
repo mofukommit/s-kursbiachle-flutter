@@ -58,5 +58,9 @@
     <array>
       <string>tel</string>
     </array>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_dartobservatory._tcp</string>
+    </array>
 </dict>
 </plist>

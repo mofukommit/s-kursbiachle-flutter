@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder> {
         // Navpages
         "/search" : (BuildContext context) => const Search(),
-        "/course" : (BuildContext context) => const Course(),
+        "course" : (BuildContext context) => const Course(),
         "/scanner": (BuildContext context) => const Scanner(),
         "/closing" : (BuildContext context) => const Closing(),
         "/settings": (BuildContext context) => const Settings(),

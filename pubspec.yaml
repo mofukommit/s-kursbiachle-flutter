@@ -32,7 +32,9 @@ dependencies:
 
   # added dependencies
   qr_flutter: ^4.0.0
-  mobile_scanner: ^1.1.1
+  #mobile_scanner: ^2.0.0
+  mobile_scanner:
+    git: https://github.com/mofukommit/mobile_scanner.git
   image_picker: ^0.8.5+3
   http: ^0.13.4
   sqflite: ^2.0.2+1

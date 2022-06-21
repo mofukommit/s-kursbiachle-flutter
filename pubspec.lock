@@ -306,10 +306,12 @@ packages:
   mobile_scanner:
     dependency: "direct main"
     description:
-      name: mobile_scanner
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.2"
+      path: "."
+      ref: HEAD
+      resolved-ref: a750964e199fbc4b11c91b2707bbb9d36c21421a
+      url: "https://github.com/mofukommit/mobile_scanner.git"
+    source: git
+    version: "2.0.0"
   package_config:
     dependency: transitive
     description:
