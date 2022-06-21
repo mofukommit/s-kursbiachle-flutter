@@ -1,5 +1,7 @@
 // fetch data from the internet
 
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import '../database/teacher_database.dart';
 import '../model/teacher.dart';
@@ -19,15 +21,25 @@ class GetPupils {
       sname = 'none';
     }
 
+    String username = 'user';
+    String password = 'OxvuA3-@h][DUG1jm0V@@4HQP^aDIoWZRQ&^Iq1t&x#QXw!z)wGsM14p<q2DX5YIbbyVpLK0@-g8-cPoMY#uNaNN*/XRoo4u-^)';
+    print(password);
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    print(basicAuth);
+
     var req_uri = '${fname}/${sname}';
-    var urlRoute = 'http://' + key.url + '/mobile/v1/get_pupil_search_mobile/';
+    var urlRoute = 'https://' + key.url + '/mobile/v1/get_pupil_search_mobile/';
     // var urlRoute = 'http://192.168.1.55:5000/mobile/v1/get_pupil_search_mobile/';
     var uri = Uri.parse('${urlRoute}${req_uri}');
 
 
-    var response = await client.get(uri, headers: {
-      'costumersecret': key.costumerSec,
-      'costumerkey': key.costumerKey
+    var response = await client.get(uri, headers: <String, String>{
+      'costumersecret':
+      key.costumerSec,
+      'costumerkey':
+      key.costumerKey,
+      'Authorization': basicAuth
     });
 
     print('PUPILS REQUEST ${response.body}');

@@ -22,7 +22,7 @@ class Pupilsearch {
   String sname;
 
   factory Pupilsearch.fromJson(Map<String, dynamic> json) => Pupilsearch(
-    age: json["age"],
+    age: int.parse(json["age"]),
     fname: json["fname"],
     pupilId: json["pupil_id"],
     sname: json["sname"],

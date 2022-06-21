@@ -6,7 +6,6 @@ import '../model/teacher.dart';
 getID(String? valueQR) async {
   try {
     Map<String, dynamic> map = jsonDecode(valueQR!);
-
     if (map['type'] == 'pupil') {
       return GetPupilID(map['type'], map['data']['pupil_id']);
     } else if (map['type'] == 'key') {
@@ -18,6 +17,12 @@ getID(String? valueQR) async {
           return KeyCreation(map['type'], map['data']['costumersecret'],
               map['data']['costumerkey'], map['data']['url']);
         }else{
+          /* TEST */
+          if (key.url != map['data']['url']){
+            KeyDatabase.instance.delete(1);
+            return KeyCreation(map['type'], map['data']['costumersecret'],
+                map['data']['costumerkey'], map['data']['url']);
+          }
           return ErrorNEW('GIBTS SCHON', 782139);
         }
       } on Exception catch (e) {

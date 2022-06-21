@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skursbiachle/services/get_pupil_by_qr.dart';
 import 'package:skursbiachle/services/json_pupil_qr.dart';
-
-import '../../widgets/accordion.dart';
+import 'package:accordion/accordion.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class PupilCheck extends StatefulWidget {
   final Map<String, dynamic>? args;
@@ -16,14 +16,8 @@ class PupilCheck extends StatefulWidget {
 }
 
 class PupilCheckState extends State<PupilCheck> {
-  late Pupil? pupil;
   var isLoaded = false;
-
-  // design var
-  var rowAlignment = MainAxisAlignment.center;
-  double rowPadding = 25;
-  double rowPaddingRight = 50;
-  double rowGap = 50;
+  Pupil? pupil;
 
   @override
   void initState() {
@@ -44,122 +38,174 @@ class PupilCheckState extends State<PupilCheck> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.kommit,
-        title: const Text("Schüler"),
-        centerTitle: true,
-      ),
-      body: Visibility(
-          visible: isLoaded,
-          replacement: const Center(
-            child: CircularProgressIndicator(),
-          ),
-          child: PageView.builder(
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      height: 180,
-                      child: Row(
-                        children: [
-                          // margin-left:
-                          const SizedBox(width: 50, height: 100),
-                          Expanded(
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.blueGrey.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Column(
-                                  // vertical align
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "${pupil!.fname} ${pupil!.sname}",
-                                          style: const TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          children: const [
-                                            Text(
-                                              "Geburtstdatum:",
-                                              style: TextStyle(),
-                                            ),
-                                            Text(
-                                              "Präf. Lehrer:",
-                                              style: TextStyle(),
-                                            ),
-                                          ],
-                                        ),
-                                        Column(children: [
-                                          Text(
-                                            pupil!.age.toString(),
-                                            style: const TextStyle(),
-                                          ),
-                                          Text(
-                                            pupil!.prefTeach.toString(),
-                                            style: const TextStyle(),
-                                          ),
-                                        ]),
-                                      ],
-                                    ),
-                                  ],
-                                )),
-                          ),
-
-                          // margin-right:
-                          const SizedBox(width: 50, height: 100),
-                        ],
-                      )),
-                  const SizedBox(height: 10),
-                  Column(
+        appBar: AppBar(
+          backgroundColor: Colors.kommit,
+          title: const Text("Schüler"),
+          centerTitle: true,
+        ),
+        body: Visibility(
+            visible: isLoaded,
+            replacement: const Center(
+              child: CircularProgressIndicator(),
+            ),
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Container(
+                  margin: const EdgeInsets.all(10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: Column(
                     children: [
-                      Accordion(
-                        title: 'Section #1',
-                        content: pupil!.addr.toString()),
-                      const Accordion(
-                          title: 'Section #2',
-                          content:
-                              'Fusce ex mi, commodo ut bibendum sit amet, faucibus ac felis. Nullam vel accumsan turpis, quis pretium ipsum. Pellentesque tristique, diam at congue viverra, neque dolor suscipit justo, vitae elementum leo sem vel ipsum'),
-                      const Accordion(
-                          title: 'Section #3',
-                          content:
-                              'Nulla facilisi. Donec a bibendum metus. Fusce tristique ex lacus, ac finibus quam semper eu. Ut maximus, enim eu ornare fringilla, metus neque luctus est, rutrum accumsan nibh ipsum in erat. Morbi tristique accumsan odio quis luctus.'),
+                      const SizedBox(height: 20),
+                      Text(
+                        "${pupil!.fname} ${pupil!.sname}",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Alter: ${pupil!.age}",
+                        style: const TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Präferenz: ${pupil!.prefTeach}",
+                        style: const TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          FlutterPhoneDirectCaller.callNumber(
+                              pupil!.tel.toString());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.kommit,
+                        ),
+                        icon: Text(
+                          "Tel.: ${pupil!.tel}",
+                          style: const TextStyle(
+                            fontSize: 23,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        label: const Icon(Icons.phone, size: 24.0),
+                      ),
+                      const SizedBox(height: 20),
+                      ListView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: [
+                            Accordion(
+                              disableScrolling: true,
+                              maxOpenSections: 2,
+                              headerBackgroundColor: Colors.kommit,
+                              contentBorderColor: Colors.kommit,
+                              // leftIcon: const Icon(Icons.audiotrack, color: Colors.white),
+                              children: [
+                                AccordionSection(
+                                  isOpen: false,
+                                  header: const Text('Bisherige Kurse',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20)),
+                                  content: ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    padding: const EdgeInsets.all(8),
+                                    itemCount: pupil?.courses.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: FittedBox(
+                                          fit: BoxFit.fitWidth,
+                                          child: Text(
+                                            pupil!.courses[index].courseId
+                                                .toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 24,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                AccordionSection(
+                                  isOpen: false,
+                                  header: const Text('Adresse/n',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20)),
+                                  content: ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: pupil?.addr.length,
+                                    itemBuilder: (context, index) {
+                                      return Text(
+                                        "${pupil!.addr[index].reFname} ${pupil!.addr[index].reSname} \n${pupil!.addr[index].street} ${pupil!.addr[index].housenr}\n${pupil!.addr[index].plz} ${pupil!.addr[index].city} \n${pupil!.addr[index].country}",
+                                        overflow: TextOverflow.visible,
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ]),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            WillPopScope(
+                              onWillPop: () async {
+                                Navigator.pop(context, true);
+                                return true;
+                              },
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.red,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context, true);
+                                  isLoaded = false;
+                                },
+                                child: const Text('Abbrechen',
+                                    style: TextStyle(fontSize: 20)),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.green,
+                                  textStyle:
+                                      const TextStyle(color: Colors.white)),
+                              onPressed: () {},
+                              child: const Text('Annehmen',
+                                  style: TextStyle(fontSize: 20)),
+                            ),
+                            const SizedBox(width: 10),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 200),
-                  Center(
-                      child: WillPopScope(
-                    onWillPop: () async {
-                      Navigator.pop(context, true);
-                      return true;
-                    },
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.kommit,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context, true);
-                      },
-                      child: const Text('Bestätigen'),
-                    ),
-                  )),
-                ],
+                ),
               );
-            },
-          )),
-    );
+            })));
   }
 }
