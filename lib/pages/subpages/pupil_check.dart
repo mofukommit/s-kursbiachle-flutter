@@ -60,49 +60,61 @@ class PupilCheckState extends State<PupilCheck> {
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   child: Column(
                     children: [
-                      const SizedBox(height: 20),
-                      Text(
-                        "${pupil!.fname} ${pupil!.sname}",
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        "Alter: ${pupil!.age}",
-                        style: const TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        "Präferenz: ${pupil!.prefTeach}",
-                        style: const TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          FlutterPhoneDirectCaller.callNumber(
-                              pupil!.tel.toString());
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.kommit,
-                        ),
-                        icon: Text(
-                          "Tel.: ${pupil!.tel}",
-                          style: const TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.normal,
+                      Card(
+                        margin: const EdgeInsets.all(20),
+                        elevation: 8,
+                        shadowColor: Colors.kommit,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              Text(
+                                "${pupil!.fname} ${pupil!.sname}",
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                "Alter: ${pupil!.age}",
+                                style: const TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                "Präferenz: ${pupil!.prefTeach}",
+                                style: const TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  FlutterPhoneDirectCaller.callNumber(
+                                      pupil!.tel.toString());
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.kommit,
+                                ),
+                                icon: Text(
+                                  "Tel.: ${pupil!.tel}",
+                                  style: const TextStyle(
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                label: const Icon(Icons.phone, size: 24.0),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
                           ),
                         ),
-                        label: const Icon(Icons.phone, size: 24.0),
                       ),
-                      const SizedBox(height: 20),
                       ListView(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -110,17 +122,37 @@ class PupilCheckState extends State<PupilCheck> {
                             Accordion(
                               disableScrolling: true,
                               maxOpenSections: 2,
-                              headerBackgroundColor: Colors.kommit,
+                              headerBackgroundColor: Colors.white,
                               contentBorderColor: Colors.kommit,
+                              headerPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+
+
                               // leftIcon: const Icon(Icons.audiotrack, color: Colors.white),
                               children: [
                                 AccordionSection(
                                   isOpen: false,
-                                  header: const Text('Bisherige Kurse',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20)),
+                                  header: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(0),
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(0)
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(blurRadius: 8.0),
+                                        BoxShadow(color: Colors.white, offset: Offset(16, 0)),
+                                      ],
+                                    ),
+                                    child: const Text('Bisherige Kurse',
+                                        style: TextStyle(
+                                            fontSize: 20,)),
+                                  ),
                                   content: ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     padding: const EdgeInsets.all(8),
                                     itemCount: pupil?.courses.length,
@@ -147,9 +179,10 @@ class PupilCheckState extends State<PupilCheck> {
                                   isOpen: false,
                                   header: const Text('Adresse/n',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 20)),
+                                          fontSize: 20)),
                                   content: ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: pupil?.addr.length,
                                     itemBuilder: (context, index) {
@@ -170,43 +203,68 @@ class PupilCheckState extends State<PupilCheck> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            WillPopScope(
-                              onWillPop: () async {
-                                Navigator.pop(context, true);
-                                return true;
-                              },
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.red,
-                                ),
-                                onPressed: () {
+                            Expanded(
+                              flex: 1,
+                              child: WillPopScope(
+                                onWillPop: () async {
                                   Navigator.pop(context, true);
-                                  isLoaded = false;
+                                  return true;
                                 },
-                                child: const Text('Abbrechen',
-                                    style: TextStyle(fontSize: 20)),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context, true);
+                                    isLoaded = false;
+                                  },
+                                  child: Container(
+                                    height: 56,
+                                    // height: 56,
+                                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                                    child: const Center(
+                                      child: Text('Abbrechen',
+                                          softWrap: false,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                          )),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                             const SizedBox(width: 10),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.green,
-                                  textStyle:
-                                      const TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                PostNewPupilActiveCourse().postPupil(pupil?.pId).then((re) {
-                                  if (re){
-                                    Navigator.pop(context, true);
-                                  } else {
-                                    print('FEHLER!!');
-                                  }
-                                });
-                              },
-                              child: const Text('In Gruppe übertragen',
-                                  style: TextStyle(fontSize: 20)),
+                            Expanded(
+                              flex: 1,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.green,
+                                    textStyle:
+                                        const TextStyle(color: Colors.white)),
+                                onPressed: () {
+                                  PostNewPupilActiveCourse()
+                                      .postPupil(pupil?.pId)
+                                      .then((re) {
+                                    if (re) {
+                                      Navigator.pop(context, true);
+                                    } else {
+                                      print('FEHLER!!');
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                                  child: const Text('In Gruppe übertragen',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                ),
+                              ),
                             ),
                             const SizedBox(width: 10),
                           ],

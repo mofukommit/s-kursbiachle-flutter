@@ -52,7 +52,6 @@ class AuthorizedState extends State<Authorized> {
         }
       }
     });
-
   }
 
   @override
