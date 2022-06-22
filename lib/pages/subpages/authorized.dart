@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skursbiachle/services/authorization.dart';
-import 'package:skursbiachle/services/get_pupil_by_qr.dart';
-import 'package:skursbiachle/services/json_pupil_qr.dart';
-import 'package:accordion/accordion.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class Authorized extends StatefulWidget {
   const Authorized({Key? key}) : super(key: key);

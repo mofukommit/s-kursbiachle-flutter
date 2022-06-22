@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import '../database/teacher_database.dart';
 import '../model/teacher.dart';
@@ -17,33 +15,31 @@ class CourseState extends State<Course> {
   List<Courses>? posts;
   var isLoaded = false;
   var gotData = false;
+
   get result => null;
-  
 
   @override
   void initState() {
     super.initState();
-    check_if_registered()
-        .then((result) {
-          if (result == true){
-            //fetch data from API
-            gotData = true;
-            getData();
-          }
-        }
-    );
+    check_if_registered().then((result) {
+      if (result == true) {
+        //fetch data from API
+        gotData = true;
+        getData();
+      }
+    });
   }
 
   check_if_registered() async {
     late KeyDB key;
-    try{
+    try {
       key = await KeyDatabase.instance.readKey(1);
-    }on Exception {
+    } on Exception {
       return false;
     }
-    if (key.costumerKey != ''){
+    if (key.costumerKey != '') {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -58,14 +54,13 @@ class CourseState extends State<Course> {
   }
 
   Future refresh() async {
-    if(gotData == false){
-      check_if_registered()
-          .then((result) {
-          if (result == true){
-            //fetch data from API
-            gotData = true;
-            getData();
-          }
+    if (gotData == false) {
+      check_if_registered().then((result) {
+        if (result == true) {
+          //fetch data from API
+          gotData = true;
+          getData();
+        }
       });
     } else {
       setState(() => posts?.clear());
@@ -81,75 +76,68 @@ class CourseState extends State<Course> {
     return checkWidget();
   }
 
-  checkWidget(){
-    if(gotData){
+  checkWidget() {
+    if (gotData) {
       return isAuth();
-    }else{
+    } else {
       return notAuth();
     }
   }
 
-  Widget notAuth(){
+  Widget notAuth() {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.kommit,
-        title: const Text('Kursübersicht'),
-        centerTitle: true,
-      ),
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: ListView.builder(
-          physics:AlwaysScrollableScrollPhysics(),
-          itemCount: 1,
-          padding: const EdgeInsets.only(top: 50),
-          itemBuilder: (BuildContext context, int index) {
-            return Center(
-              child: Card(
-                margin: EdgeInsets.all(20),
-                elevation: 8,
-                shadowColor: Colors.kommit,
-                child: SizedBox(
-                  height: 500,
-                  child: Container(
-                    padding: EdgeInsets.only(left:15, bottom: 50, right: 20, top:50),
-
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(left:0, bottom: 10, right: 0, top:0),
-                          child: const Center(
-                              child: Text(
-                                  'Bitte Authorisieren Sie sich bei Ihrer Skischule.\n'
-                                      'Nur so können Sie Ihre Daten einsehen und bearbeiten. \n\n'
-                                      'Scannen Sie bei Ihrer Skischulverwaltung einfach Ihren persönlichen QR-Code ein!',
+        appBar: AppBar(
+          backgroundColor: Colors.kommit,
+          title: const Text('Kursübersicht'),
+          centerTitle: true,
+        ),
+        body: RefreshIndicator(
+            onRefresh: refresh,
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: 1,
+              padding: const EdgeInsets.only(top: 20),
+              itemBuilder: (BuildContext context, int index) {
+                return Center(
+                  child: Card(
+                    margin: const EdgeInsets.all(20),
+                    elevation: 8,
+                    shadowColor: Colors.kommit,
+                    child: SizedBox(
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            left: 15, bottom: 30, right: 20, top: 30),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 0, bottom: 10, right: 0, top: 0),
+                              child: const Center(
+                                  child: Text(
+                                'Bitte Authorisieren Sie sich bei Ihrer Skischule.\n'
+                                'Nur so können Sie Ihre Daten einsehen und bearbeiten. \n\n'
+                                'Scannen Sie bei Ihrer Skischulverwaltung einfach Ihren persönlichen QR-Code ein!',
                                 textAlign: TextAlign.center,
                                 textScaleFactor: 2.0,
-                              )
-                          ),
+                              )),
+                            ),
+                            const Center(
+                                child: Text(
+                              'Nachdem Sie diesen eingescannt haben, können Sie diese Seite mit einem Wisch von oben nach unten aktualisieren',
+                              textAlign: TextAlign.center,
+                              textScaleFactor: 1.0,
+                            )),
+                          ],
                         ),
-                        Container(
-                          child: const Center(
-                              child: Text(
-                                'Nachdem Sie diesen eingescannt haben, können Sie diese Seite mit einem Wisch von oben nach unten aktualisieren',
-                                textAlign: TextAlign.center,
-                                textScaleFactor: 1.0,
-                              )
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-
-              ),
-            );
-          },
-      )
-      )
-    );
+                );
+              },
+            )));
   }
 
-  Widget isAuth(){
+  Widget isAuth() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.kommit,
@@ -162,61 +150,62 @@ class CourseState extends State<Course> {
           child: CircularProgressIndicator(),
         ),
         child: posts?.length == 0
-        ? const Center(child: CircularProgressIndicator(),)
-        : RefreshIndicator(
-          onRefresh: refresh,
-          child: ListView.builder(
-          itemCount: posts?.length,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.orange,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, '/courseDetails',
-                            arguments: {
-                              'courseId': posts![index].courseId,
-                            });
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: refresh,
+                child: ListView.builder(
+                  itemCount: posts?.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
                         children: [
-                          Text(
-                            posts![index].gName,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.orange,
                             ),
                           ),
-                          Text(
-                            "Beginn: ${posts![index].startTime} Uhr",
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/courseDetails',
+                                    arguments: {
+                                      'courseId': posts![index].courseId,
+                                    });
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    posts![index].gName,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Beginn: ${posts![index].startTime} Uhr",
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-            );
-          },
-        ),
-        ),
       ),
     );
   }
