@@ -15,6 +15,7 @@ class CourseDetails {
     required this.pupilId,
     required this.sname,
     required this.startDate,
+    required this.courseDate,
   });
 
   DateTime endDate;
@@ -22,6 +23,8 @@ class CourseDetails {
   String pupilId;
   String sname;
   DateTime startDate;
+  DateTime courseDate;
+
 
   factory CourseDetails.fromJson(Map<String, dynamic> json) => CourseDetails(
     endDate: DateTime.parse(json["end_date"]),
@@ -29,6 +32,7 @@ class CourseDetails {
     pupilId: json["pupil_id"],
     sname: json["sname"],
     startDate: DateTime.parse(json["start_date"]),
+    courseDate: DateTime.parse(json["course_date"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +41,6 @@ class CourseDetails {
     "pupil_id": pupilId,
     "sname": sname,
     "start_date": "${startDate.year.toString().padLeft(4, '0')}-${startDate.month.toString().padLeft(2, '0')}-${startDate.day.toString().padLeft(2, '0')}",
+    "course_date": "${courseDate.year.toString().padLeft(4, '0')}-${courseDate.month.toString().padLeft(2, '0')}-${courseDate.day.toString().padLeft(2, '0')}"
   };
 }

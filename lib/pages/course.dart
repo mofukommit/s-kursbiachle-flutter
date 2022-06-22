@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../database/teacher_database.dart';
 import '../model/teacher.dart';
 import '../services/get_courses.dart';
@@ -47,6 +48,11 @@ class CourseState extends State<Course> {
   getData() async {
     posts = await GetCourses().getPosts();
     if (posts != null) {
+      final post = posts;
+      post?.forEach((element) {
+        print('NEXT');
+        print(element.gName);
+      });
       setState(() {
         isLoaded = true;
       });
@@ -159,48 +165,81 @@ class CourseState extends State<Course> {
                   itemCount: posts?.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.orange,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/courseDetails',
-                                    arguments: {
-                                      'courseId': posts![index].courseId,
-                                    });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    posts![index].gName,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Beginn: ${posts![index].startTime} Uhr",
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
+                      padding: const EdgeInsets.only(
+                          top: 10, left: 8, right: 8, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/courseDetails',
+                              arguments: {
+                                'courseId': posts![index].courseId,
+                              });
+                        },
+                      child: Card(
+                          child: Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    left: 10.0, top: 10, bottom: 10),
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.orange,
+                                ),
                               ),
-                            ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          posts![index].gName,
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Container(
+                                          padding: const EdgeInsets.only(right: 10.0),
+                                          child: Text(
+                                            "Anzahl: ${posts![index].amountPupils}",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "Datum: ${DateFormat('dd.MM.yyyy').format(posts![index].courseDate)}",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Beginn: ${posts![index].startTime} Uhr    ",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     );
                   },
