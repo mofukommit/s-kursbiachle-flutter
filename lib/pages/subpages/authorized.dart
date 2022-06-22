@@ -58,21 +58,56 @@ class AuthorizedState extends State<Authorized> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.kommit,
-          title: const Text("Authorisierung"),
-          centerTitle: true,
-          leading: BackButton(
-            onPressed: () => Navigator.pop(context, true),
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.kommit,
+        title: const Text("Authorisierung"),
+        centerTitle: true,
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context, true),
         ),
-        body: Visibility(
-            visible: isLoaded,
-            replacement: const Center(
-              child: CircularProgressIndicator(),
+      ),
+      body: Visibility(
+        visible: isLoaded,
+        replacement: const Center(
+          child: CircularProgressIndicator(),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Card(
+              margin: const EdgeInsets.only(
+                  top: 50, left: 30, right: 30, bottom: 0),
+              elevation: 8,
+              shadowColor: Colors.kommit,
+              child: Container(
+                padding: const EdgeInsets.all(30),
+                child: Center(
+                    child: Text(
+                  'Angemeldet: \n\n ${res?.fname} ${res?.sname}',
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 1.3,
+                )),
+              ),
             ),
-            child: Text('${res?.fname} ${res?.sname}'),
+            Container(
+              margin: const EdgeInsets.all(30),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(10),
+                    primary: Colors.green,
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                    )),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }

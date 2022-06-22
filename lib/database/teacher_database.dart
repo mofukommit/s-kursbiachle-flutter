@@ -8,17 +8,12 @@ import '../model/teacher.dart';
 class KeyDatabase {
 
   static final KeyDatabase instance = KeyDatabase._init();
-
   static Database? _database;
 
   KeyDatabase._init();
 
   Future<Database> get database async {
-
     if (_database != null) return _database!;
-
-
-
     _database = await _initDB('keys.db');
     return _database!;
   }
