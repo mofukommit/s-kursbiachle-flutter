@@ -70,9 +70,9 @@ class ScannerState extends State<Scanner>
                                   'pupilID': data.pupilID,
                                 });
                           } else if (data is KeyCreation) {
-                            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                            print(data.url);
-                            // writeKeys(data.costumerKey, data.costumerSec, data.url);
+                            // print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            // print(data.url);
+                            writeKeys(data.costumerKey, data.costumerSec, data.url);
                             result = Navigator.pushNamed(context, '/authorized');
                           } else {
                             if (data is ErrorNEW) {

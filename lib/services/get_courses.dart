@@ -18,7 +18,6 @@ class GetCourses {
     String password = 'OxvuA3-@h][DUG1jm0V@@4HQP^aDIoWZRQ&^Iq1t&x#QXw!z)wGsM14p<q2DX5YIbbyVpLK0@-g8-cPoMY#uNaNN*/XRoo4u-^)';
     print(password);
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    print(basicAuth);
 
     var uri = Uri.parse('https://' + key.url + '/mobile/v1/get_courses');
     // var uri = Uri.parse('http://192.168.1.55:5000/mobile/v1/get_courses');

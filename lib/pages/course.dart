@@ -83,13 +83,13 @@ class CourseState extends State<Course> {
 
   checkWidget(){
     if(gotData){
-      return getWidget();
+      return isAuth();
     }else{
-      return getOtherWidget();
+      return notAuth();
     }
   }
 
-  Widget getOtherWidget(){
+  Widget notAuth(){
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.kommit,
@@ -149,7 +149,7 @@ class CourseState extends State<Course> {
     );
   }
 
-  Widget getWidget(){
+  Widget isAuth(){
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.kommit,

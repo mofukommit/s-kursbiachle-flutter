@@ -23,9 +23,7 @@ getID(String? valueQR) async {
             return KeyCreation(map['type'], map['data']['costumersecret'],
                 map['data']['costumerkey'], map['data']['url']);
           }
-          return KeyCreation(map['type'], map['data']['costumersecret'],
-              map['data']['costumerkey'], map['data']['url']);
-          // return ErrorNEW('GIBTS SCHON', 782139);
+          return ErrorNEW('GIBTS SCHON', 782139);
         }
       } on Exception catch (e) {
         print(e);
