@@ -77,7 +77,7 @@ class ScannerState extends State<Scanner>
                             result = Navigator.pushNamed(context, '/authorized',
                                 arguments: {
                                   'customerkey': data.costumerKey,
-                                  'customersecret': data.costumerSec,
+                                  'customersecret ': data.costumerSec,
                                   'url': data.url
                                 });
                           } else {
