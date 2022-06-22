@@ -4,6 +4,8 @@ import 'package:skursbiachle/services/json_pupil_qr.dart';
 import 'package:accordion/accordion.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
+import '../../services/post_pupil_to_my_course.dart';
+
 class PupilCheck extends StatefulWidget {
   final Map<String, dynamic>? args;
 
@@ -195,9 +197,15 @@ class PupilCheckState extends State<PupilCheck> {
                                   textStyle:
                                       const TextStyle(color: Colors.white)),
                               onPressed: () {
-                                Navigator.pop(context, true);
+                                PostNewPupilActiveCourse().postPupil(pupil?.pId).then((re) {
+                                  if (re){
+                                    Navigator.pop(context, true);
+                                  } else {
+                                    print('FEHLER!!');
+                                  }
+                                });
                               },
-                              child: const Text('Annehmen',
+                              child: const Text('In Gruppe übertragen',
                                   style: TextStyle(fontSize: 20)),
                             ),
                             const SizedBox(width: 10),

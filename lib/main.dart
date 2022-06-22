@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         "/pupilCheck": (context) => PupilCheck(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         "/courseDetails": (context) => CourseDetails(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         "/pupilDetail": (context) => PupilDetail(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
-        "/authorized": (context) => Authorized(),
+        "/authorized": (context) => Authorized(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         },
       home: const RootWidget(),
     );

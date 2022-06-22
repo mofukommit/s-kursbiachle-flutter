@@ -191,6 +191,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  hex:
+    dependency: "direct main"
+    description:
+      name: hex
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   http:
     dependency: "direct main"
     description:
@@ -306,11 +313,9 @@ packages:
   mobile_scanner:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: a750964e199fbc4b11c91b2707bbb9d36c21421a
-      url: "https://github.com/mofukommit/mobile_scanner.git"
-    source: git
+      name: mobile_scanner
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.0.0"
   package_config:
     dependency: transitive
