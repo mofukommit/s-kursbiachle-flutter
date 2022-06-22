@@ -177,6 +177,7 @@ class PupilCheckState extends State<PupilCheck> {
                                 ),
                                 AccordionSection(
                                   isOpen: false,
+
                                   header: const Text('Adresse/n',
                                       style: TextStyle(
                                           fontSize: 20)),
