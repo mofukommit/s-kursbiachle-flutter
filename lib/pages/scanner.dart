@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:skursbiachle/model/teacher.dart';
+import 'package:hex/hex.dart';
+
 
 import 'package:skursbiachle/services/scan_qr_get_data.dart';
 import 'package:skursbiachle/widgets/qr_scanner_overlay.dart';
@@ -70,10 +74,12 @@ class ScannerState extends State<Scanner>
                                   'pupilID': data.pupilID,
                                 });
                           } else if (data is KeyCreation) {
-                            // print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                            // print(data.url);
-                            writeKeys(data.costumerKey, data.costumerSec, data.url);
-                            result = Navigator.pushNamed(context, '/authorized');
+                            result = Navigator.pushNamed(context, '/authorized',
+                                arguments: {
+                                  'customerkey': data.costumerKey,
+                                  'customersecret': data.costumerSec,
+                                  'url': data.url
+                                });
                           } else {
                             if (data is ErrorNEW) {
                               print('${data.msg}, ${data.code}');
@@ -177,17 +183,6 @@ class ScannerState extends State<Scanner>
         },
       ),
     );
-  }
-
-  Future writeKeys(costumerKey, costumerSec, url) async {
-    final key = KeyDB(
-      id: 1,
-      costumerKey: costumerKey,
-      costumerSec: costumerSec,
-      url: url
-    );
-
-    await KeyDatabase.instance.create(key);
   }
 }
 
