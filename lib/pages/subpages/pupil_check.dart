@@ -53,7 +53,8 @@ class PupilCheckState extends State<PupilCheck> {
             ),
             child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-              return SingleChildScrollView(
+              return 
+                SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(
                       margin: const EdgeInsets.all(10),

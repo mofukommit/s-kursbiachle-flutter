@@ -16,7 +16,8 @@ class CourseState extends State<Course> {
   List<Courses>? posts;
   var isLoaded = false;
   var gotData = false;
-
+  List<Widget> widgetList = [];
+  List<String> dateList = [];
   get result => null;
 
   @override
@@ -48,11 +49,7 @@ class CourseState extends State<Course> {
   getData() async {
     posts = await GetCourses().getPosts();
     if (posts != null) {
-      final post = posts;
-      post?.forEach((element) {
-        print('NEXT');
-        print(element.gName);
-      });
+      dataIterator(posts!);
       setState(() {
         isLoaded = true;
       });
@@ -87,6 +84,89 @@ class CourseState extends State<Course> {
       return isAuth();
     } else {
       return notAuth();
+    }
+  }
+
+  dataIterator(List<Courses> courses) {
+    for (var course in courses) {
+      dateChecker(course);
+    }
+  }
+
+  dateChecker(Courses course) {
+    DateTime today = new DateTime.now();
+    DateTime? c_date = course.courseDate;
+
+    if (c_date.year == today.year &&
+        c_date.month == today.month &&
+        c_date.day == today.day) {
+      if (!dateList.contains(DateFormat('dd-MM-yyyy').format(c_date))) {
+        dateList.add(DateFormat('dd-MM-yyyy').format(c_date));
+        widgetList.add(
+          Container(
+            padding: const EdgeInsets.only(top: 25.0),
+            child: Text('Heute - ${c_date.day}.${c_date.month}.${c_date.year}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                )),
+          ),
+        );
+        widgetList.add(
+          dateContainer(context, course),
+        );
+      } else {
+        widgetList.add(Column(
+          children: [
+            dateContainer(context, course),
+          ],
+        ));
+      }
+    } else {
+      var tomorrow = DateTime(today.year, today.month, today.day + 1);
+      if (!dateList.contains(DateFormat('dd-MM-yyyy').format(c_date))) {
+        dateList.add(DateFormat('dd-MM-yyyy').format(c_date));
+        if (c_date.year == tomorrow.year &&
+            c_date.month == tomorrow.month &&
+            c_date.day == tomorrow.day) {
+          widgetList.add(
+            Container(
+              padding: const EdgeInsets.only(top: 10.0),
+              child:
+                  Text('Morgen - ${c_date.day}.${c_date.month}.${c_date.year}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      )),
+            ),
+          );
+          widgetList.add(
+            dateContainer(context, course),
+          );
+        } else {
+          widgetList.add(
+            Container(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text('${c_date.day}.${c_date.month}.${c_date.year}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+              ),
+            ),
+          );
+          widgetList.add(
+            dateContainer(context, course),
+          );
+        }
+      } else {
+        widgetList.add(
+          dateContainer(context, course),
+        );
+      }
     }
   }
 
@@ -162,90 +242,89 @@ class CourseState extends State<Course> {
             : RefreshIndicator(
                 onRefresh: refresh,
                 child: ListView.builder(
-                  itemCount: posts?.length,
+                  itemCount: widgetList.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 8, right: 8, bottom: 0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/courseDetails',
-                              arguments: {
-                                'courseId': posts![index].courseId,
-                              });
-                        },
-                      child: Card(
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    left: 10.0, top: 10, bottom: 10),
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Colors.orange,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          posts![index].gName,
-                                          style: const TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        Container(
-                                          padding: const EdgeInsets.only(right: 10.0),
-                                          child: Text(
-                                            "Anzahl: ${posts![index].amountPupils}",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "Datum: ${DateFormat('dd.MM.yyyy').format(posts![index].courseDate)}",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Beginn: ${posts![index].startTime} Uhr    ",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                    return widgetList[index];
                   },
                 ),
               ),
       ),
     );
   }
+}
+
+Widget dateContainer(context, Courses course) {
+  return Container(
+    padding: const EdgeInsets.only(top: 4, left: 8, right: 8, bottom: 0),
+    child: GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/courseDetails', arguments: {
+          'courseId': course.courseId,
+        });
+      },
+      child: Card(
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 10.0, top: 10, bottom: 10),
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.orange,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        course.gName,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Text(
+                          "Anzahl: ${course.amountPupils}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Datum: ${DateFormat('dd.MM.yyyy').format(course.courseDate)}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Beginn: ${course.startTime} Uhr    ",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
