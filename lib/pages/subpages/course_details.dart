@@ -25,7 +25,7 @@ class CourseDetailsState extends State<CourseDetails> {
   }
 
   getCourseDetails() async {
-    details = await GetCourseDetails().getDetails(widget.args!['courseId']);
+    details = await GetCourseDetails().getDetails(widget.args!['courseId'], widget.args!['courseDate']);
 
     if (details != null) {
       setState(() {

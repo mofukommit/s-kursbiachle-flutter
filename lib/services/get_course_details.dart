@@ -9,7 +9,7 @@ import 'json_courses.dart';
 import 'package:http/http.dart' as http;
 
 class GetCourseDetails {
-  Future<List<CourseDetails>?> getDetails(String courseId) async {
+  Future<List<CourseDetails>?> getDetails(String courseId, String courseDate) async {
     late KeyDB key;
     key = await KeyDatabase.instance.readKey(1);
 
@@ -21,7 +21,8 @@ class GetCourseDetails {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
     print(basicAuth);
 
-    var uri = Uri.parse('https://' + key.url + '/mobile/v1/detail_course/' + courseId);
+    var uri = Uri.parse('https://${key.url}/mobile/v1/detail_course/$courseId/$courseDate' );
+    print(uri);
 
     var response = await client.get(uri, headers: <String, String>{
       'costumersecret':

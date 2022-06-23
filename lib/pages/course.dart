@@ -260,6 +260,7 @@ Widget dateContainer(context, Courses course) {
       onTap: () {
         Navigator.pushNamed(context, '/courseDetails', arguments: {
           'courseId': course.courseId,
+          'courseDate': DateFormat('yyyy-MM-dd').format(course.courseDate),
         });
       },
       child: Card(
