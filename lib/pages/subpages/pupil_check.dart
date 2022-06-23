@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:skursbiachle/services/get_pupil_by_qr.dart';
 import 'package:skursbiachle/services/json_pupil_qr.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -37,6 +38,18 @@ class PupilCheckState extends State<PupilCheck> {
     }
   }
 
+
+  showTeacher(var msg) {
+    if(msg != null) {
+      return Text("Präferierter Lehrer: ${pupil!.prefTeach}\n",
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.normal,
+          height: 1.5,
+        ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +65,7 @@ class PupilCheckState extends State<PupilCheck> {
             ),
             child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-              return 
+              return
                 SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(
@@ -84,16 +97,19 @@ class PupilCheckState extends State<PupilCheck> {
                                       fontWeight: FontWeight.normal,
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
-                                  Center(
-                                    child: Text(
-                                      textAlign: TextAlign.center,
-                                      "Präferenz: \nLehrer Sowieso${pupil!.prefTeach}",
-                                      style: const TextStyle(
-                                        fontSize: 23,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
+
+                                  Column(
+                                    children: [
+                                      if(pupil!.prefTeach != null)...[
+                                        const SizedBox(height: 20),
+                                        Text("Präferierter Lehrer: ${pupil!.prefTeach}\n",
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.5,
+                                          ),)
+                                      ]
+                                    ],
                                   ),
                                   const SizedBox(height: 20),
                                   ElevatedButton.icon(
@@ -125,16 +141,26 @@ class PupilCheckState extends State<PupilCheck> {
                               shrinkWrap: true,
                               itemCount: pupil?.courses.length,
                               itemBuilder: (context, index) {
-                                return FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Text(
-                                    pupil!.courses[index].courseId.toString(),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 24,
+                                return Column(
+                                  children: [
+                                    Text(
+                                      "Datum: ${DateFormat('dd.MM.yyyy').format(pupil!.courses[index].startDate)}\n"
+                                      "Dauer: ${pupil!.courses[index].courseDays} Tage\n",
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5,
+                                      ),
                                     ),
-                                  ),
+                                    if(pupil!.courses[index].privHours != null)...[
+                                      Text("Privatstunden: ${pupil!.courses[index].privHours}\n",
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5,
+                                      ),)
+                                    ]
+                                  ],
                                 );
                               },
                             ),
@@ -149,7 +175,7 @@ class PupilCheckState extends State<PupilCheck> {
                                 return Text(
                                   "${pupil!.addr[index].reFname} ${pupil!.addr[index].reSname}\n"
                                       "${pupil!.addr[index].street} ${pupil!.addr[index].housenr}\n"
-                                      "578993 ${pupil!.addr[index].city}\n"
+                                      "${pupil!.addr[index].plz} ${pupil!.addr[index].city}\n"
                                       "${pupil!.addr[index].country}",
                                   overflow: TextOverflow.visible,
                                   style: const TextStyle(
