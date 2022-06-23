@@ -29,7 +29,6 @@ class CourseDetailsState extends State<CourseDetails> {
 
   getCourseDetails() async {
     details = await GetCourseDetails().getDetails(widget.args!['courseId'], widget.args!['courseDate']);
-
     if (details != null) {
       setState(() {
         isLoaded = true;
@@ -42,7 +41,26 @@ class CourseDetailsState extends State<CourseDetails> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.kommit,
-          title: const Text("Kursdetails"),
+          title:
+          Row(
+            children: [
+              const Text(
+                'Kursdetails',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: Text(
+                  "Anzahl: ${widget.args!['amount_pupils']}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
           centerTitle: true,
         ),
         body: Visibility(

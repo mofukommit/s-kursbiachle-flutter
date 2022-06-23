@@ -261,6 +261,7 @@ Widget dateContainer(context, Courses course) {
           'courseId': course.courseId,
           'courseDate': DateFormat('yyyy-MM-dd').format(course.courseDate),
           'color_code': courseColor,
+          'amount_pupils': course.amountPupils,
         });
       },
       child: Card(
@@ -312,7 +313,7 @@ Widget dateContainer(context, Courses course) {
                       Row(
                         children: [
                           Text(
-                            "Beginn: ${course.startTime} Uhr    ",
+                            "Beginn: ${course.startTime} Uhr",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
