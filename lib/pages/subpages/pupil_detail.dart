@@ -52,7 +52,7 @@ class PupilDetailState extends State<PupilDetail> {
             ),
             child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-                  return SizedBox(
+                  return Container(
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
