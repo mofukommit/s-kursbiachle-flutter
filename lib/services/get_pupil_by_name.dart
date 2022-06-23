@@ -8,7 +8,7 @@ import '../model/teacher.dart';
 import 'json_pupil_name.dart';
 
 class GetPupils {
-  Future<List<Pupilsearch>?> getPosts(String fname, String sname) async {
+  Future<List<Pupilsearch>?> getSearchResults(String fname, String sname) async {
     late KeyDB key;
     key = await KeyDatabase.instance.readKey(1);
 
@@ -28,10 +28,9 @@ class GetPupils {
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
     print(basicAuth);
 
-    var req_uri = '${fname}/${sname}';
-    var urlRoute = 'https://' + key.url + '/mobile/v1/get_pupil_search_mobile/';
+    var urlRoute = 'https://${key.url}/mobile/v1/get_pupil_search_mobile/${fname}/${sname}';
     // var urlRoute = 'http://192.168.1.55:5000/mobile/v1/get_pupil_search_mobile/';
-    var uri = Uri.parse('${urlRoute}${req_uri}');
+    var uri = Uri.parse(urlRoute);
 
 
     var response = await client.get(uri, headers: <String, String>{

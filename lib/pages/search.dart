@@ -30,7 +30,7 @@ class SearchState extends State<Search> {
   }
 
   getPupils() async {
-    posts = await GetPupils().getPosts(fname, sname);
+    posts = await GetPupils().getSearchResults(fname, sname);
     if (posts != null) {
       setState(() {
         isLoaded = true;
@@ -60,6 +60,13 @@ class SearchState extends State<Search> {
                         controller: fnameController,
                         keyboardType: TextInputType.text,
                         autocorrect: false,
+                        onFieldSubmitted: (value){
+                          fname = fnameController.text;
+                          sname = snameController.text;
+                          isLoaded = false;
+                          isSearched = true;
+                          getPupils();
+                        },
                         decoration: const InputDecoration(
                           labelText: 'Vorname',
                           border: OutlineInputBorder(),
@@ -78,6 +85,13 @@ class SearchState extends State<Search> {
                         child: TextFormField(
                           controller: snameController,
                           keyboardType: TextInputType.text,
+                          onFieldSubmitted: (value){
+                            fname = fnameController.text;
+                            sname = snameController.text;
+                            isLoaded = false;
+                            isSearched = true;
+                            getPupils();
+                          },
                           decoration: const InputDecoration(
                             labelText: 'Nachname',
                             border: OutlineInputBorder(),
