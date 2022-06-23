@@ -93,7 +93,6 @@ class CourseState extends State<Course> {
     for (var course in posts!) {
       DateTime today = new DateTime.now();
       DateTime? cDate = course.courseDate;
-
       if (cDate.year == today.year &&
           cDate.month == today.month &&
           cDate.day == today.day) {
@@ -337,6 +336,8 @@ Widget dateContainer(context, Courses course) {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
+                          Spacer(),
+                          ampmSelector(course.amPm),
                         ],
                       ),
                     ],
@@ -349,4 +350,22 @@ Widget dateContainer(context, Courses course) {
       ),
     ),
   );
+}
+
+ampmSelector(String amPm) {
+  if (amPm == 'a') {
+    return const Text(
+        "Vormittag",
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(fontWeight: FontWeight.bold)
+    );
+  } else {
+    return const Text(
+        "Nachmittag",
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(fontWeight: FontWeight.bold)
+    );
+  }
 }
