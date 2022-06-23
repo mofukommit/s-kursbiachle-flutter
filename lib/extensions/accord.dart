@@ -18,6 +18,8 @@ class _AccordionState extends State<Accordione> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 4,
+      shadowColor: Colors.kommit,
       margin: const EdgeInsets.all(10),
       child: GestureDetector(
         onTap: () {

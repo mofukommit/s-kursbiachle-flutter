@@ -104,13 +104,20 @@ class CourseState extends State<Course> {
           dateList.add(DateFormat('dd-MM-yyyy').format(cDate));
           widgetList.add(
             Container(
-              padding: const EdgeInsets.only(top: 25.0),
-              child: Text('Heute - ${cDate.day}.${cDate.month}.${cDate.year}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  )),
+              padding: const EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.kommit[100],
+                ),
+                padding: const EdgeInsets.all(10.0),
+                child: Text('Heute - ${cDate.day}.${cDate.month}.${cDate.year}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
             ),
           );
           widgetList.add(
@@ -134,12 +141,19 @@ class CourseState extends State<Course> {
               Container(
                 padding: const EdgeInsets.only(top: 10.0),
                 child:
-                Text('Morgen - ${cDate.day}.${cDate.month}.${cDate.year}',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    )),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.kommit[100],
+                  ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text('Morgen - ${cDate.day}.${cDate.month}.${cDate.year}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
               ),
             );
             widgetList.add(
@@ -149,11 +163,18 @@ class CourseState extends State<Course> {
             widgetList.add(
               Container(
                 padding: const EdgeInsets.only(top: 10.0),
-                child: Text('${cDate.day}.${cDate.month}.${cDate.year}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.kommit[100],
+                  ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text('${cDate.day}.${cDate.month}.${cDate.year}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
