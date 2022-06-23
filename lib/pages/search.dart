@@ -191,7 +191,7 @@ class SearchState extends State<Search> {
                       ),
                       child: ListView.separated (
                         physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: posts!.length,
+                        itemCount: posts?.length ?? 0,
                         separatorBuilder: (BuildContext context, int index) => const Divider(height:2, thickness: 1, indent: 20, endIndent: 20,),
                         itemBuilder: (context, index) {
                           return Container(
