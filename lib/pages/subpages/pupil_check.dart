@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skursbiachle/services/get_pupil_by_qr.dart';
 import 'package:skursbiachle/services/json_pupil_qr.dart';
-import 'package:accordion/accordion.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../../services/post_pupil_to_my_course.dart';
@@ -58,13 +57,12 @@ class PupilCheckState extends State<PupilCheck> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(
                       margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       child: Column(
                         children: [
                           Card(
-                            margin: const EdgeInsets.all(20),
-                            elevation: 8,
+                            margin: const EdgeInsets.all(10),
+                            elevation: 4,
                             shadowColor: Colors.kommit,
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width,
@@ -87,11 +85,14 @@ class PupilCheckState extends State<PupilCheck> {
                                     ),
                                   ),
                                   const SizedBox(height: 20),
-                                  Text(
-                                    "Präferenz: ${pupil!.prefTeach}",
-                                    style: const TextStyle(
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.normal,
+                                  Center(
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      "Präferenz: \nLehrer Sowieso${pupil!.prefTeach}",
+                                      style: const TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 20),
@@ -122,20 +123,16 @@ class PupilCheckState extends State<PupilCheck> {
                             content: ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              padding: const EdgeInsets.all(8),
                               itemCount: pupil?.courses.length,
                               itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.all(16),
-                                  child: FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: Text(
-                                      pupil!.courses[index].courseId.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                      ),
+                                return FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(
+                                    pupil!.courses[index].courseId.toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 24,
                                     ),
                                   ),
                                 );
@@ -150,40 +147,41 @@ class PupilCheckState extends State<PupilCheck> {
                               itemCount: pupil?.addr.length,
                               itemBuilder: (context, index) {
                                 return Text(
-                                  "${pupil!.addr[index].reFname} ${pupil!.addr[index].reSname} \n${pupil!.addr[index].street} ${pupil!.addr[index].housenr}\n${pupil!.addr[index].plz} ${pupil!.addr[index].city} \n${pupil!.addr[index].country}",
+                                  "${pupil!.addr[index].reFname} ${pupil!.addr[index].reSname}\n"
+                                      "${pupil!.addr[index].street} ${pupil!.addr[index].housenr}\n"
+                                      "578993 ${pupil!.addr[index].city}\n"
+                                      "${pupil!.addr[index].country}",
                                   overflow: TextOverflow.visible,
                                   style: const TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.normal,
+                                    height: 1.5,
                                   ),
                                 );
                               },
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 1,
-                                  child: WillPopScope(
-                                    onWillPop: () async {
-                                      Navigator.pop(context, true);
-                                      return true;
-                                    },
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red,
-                                      ),
-                                      onPressed: () {
+                          Container(
+                            margin: const EdgeInsets.all(10),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 1,
+                                    child: WillPopScope(
+                                      onWillPop: () async {
                                         Navigator.pop(context, true);
-                                        isLoaded = false;
+                                        return true;
                                       },
-                                      child: Container(
-                                        height: 56,
-                                        // height: 56,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 0),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context, true);
+                                          isLoaded = false;
+                                        },
                                         child: const Center(
                                           child: Text('Abbrechen',
                                               softWrap: false,
@@ -196,30 +194,26 @@ class PupilCheckState extends State<PupilCheck> {
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  flex: 1,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.green,
-                                        textStyle: const TextStyle(
-                                            color: Colors.white)),
-                                    onPressed: () {
-                                      PostNewPupilActiveCourse()
-                                          .postPupil(pupil?.pId)
-                                          .then((re) {
-                                        if (re) {
-                                          Navigator.pop(context, true);
-                                        } else {
-                                          print('FEHLER!!');
-                                        }
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 0),
-                                      child: const Text('In Gruppe übertragen',
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    flex: 1,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.green,
+                                          textStyle: const TextStyle(
+                                              color: Colors.white)),
+                                      onPressed: () {
+                                        PostNewPupilActiveCourse()
+                                            .postPupil(pupil?.pId)
+                                            .then((re) {
+                                          if (re) {
+                                            Navigator.pop(context, true);
+                                          } else {
+                                            print('FEHLER!!');
+                                          }
+                                        });
+                                      },
+                                      child: const Text('Zuweisen',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 20,
@@ -227,9 +221,8 @@ class PupilCheckState extends State<PupilCheck> {
                                           )),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
