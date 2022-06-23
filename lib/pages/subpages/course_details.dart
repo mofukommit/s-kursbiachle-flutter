@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../services/get_course_details.dart';
 
@@ -84,7 +85,7 @@ class CourseDetailsState extends State<CourseDetails> {
                               ),
                             ),
                             Text(
-                              details[index].startDate.toString() + ' - ' + details[index].endDate.toString(),
+                              'Von ${DateFormat('dd.MM.yyyy').format(details[index].startDate)} bis ${DateFormat('dd.MM.yyyy').format(details[index].endDate)}',
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
