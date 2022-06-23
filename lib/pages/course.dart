@@ -56,9 +56,6 @@ class CourseState extends State<Course> {
       setState(() {
         isLoaded = true;
       });
-      for(var i in posts!){
-        print(i.toJson());
-      }
     }
   }
 
