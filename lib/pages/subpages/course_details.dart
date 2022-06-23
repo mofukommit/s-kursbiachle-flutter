@@ -55,7 +55,7 @@ class CourseDetailsState extends State<CourseDetails> {
               Container(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: Text(
-                  "Anzahl: ${widget.args!['amount_pupils']}",
+                  "Schüler: ${widget.args!['amount_pupils']}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

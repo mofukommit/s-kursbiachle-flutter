@@ -56,6 +56,9 @@ class CourseState extends State<Course> {
       setState(() {
         isLoaded = true;
       });
+      for(var i in posts!){
+        print(i.toJson());
+      }
     }
   }
 
@@ -293,7 +296,7 @@ Widget dateContainer(context, Courses course) {
                       Container(
                         padding: const EdgeInsets.only(right: 10.0),
                         child: Text(
-                          "Anzahl: ${course.amountPupils}",
+                          "Schüler: ${course.amountPupils}",
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),

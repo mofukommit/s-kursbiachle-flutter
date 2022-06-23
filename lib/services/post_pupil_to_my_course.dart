@@ -29,8 +29,6 @@ class PostNewPupilActiveCourse {
       'Authorization': basicAuth
     });
 
-    print(response.body);
-
     if (response.statusCode == 200) {
       return true;
     } else {
