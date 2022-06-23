@@ -17,6 +17,7 @@ class Courses {
     required this.startTime,
     required this.courseId,
     required this.colorCode,
+    required this.amPm,
   });
 
   int amountPupils;
@@ -26,6 +27,7 @@ class Courses {
   String startTime;
   String courseId;
   String colorCode;
+  String amPm;
 
   factory Courses.fromJson(Map<String, dynamic> json) => Courses(
     amountPupils: json["amount_pupils"],
@@ -34,7 +36,8 @@ class Courses {
     groupId: json["group_id"],
     startTime: json["start_time"],
     courseId: json["course_id"],
-    colorCode: json["color_code"]
+    colorCode: json["color_code"],
+    amPm: json['ampm'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -45,5 +48,6 @@ class Courses {
     "start_time": startTime,
     "course_id": courseId,
     "color_code": colorCode,
+    "ampm": amPm,
   };
 }

@@ -134,6 +134,7 @@ class SearchState extends State<Search> {
                                 primary: Colors.grey,
                                 textStyle: const TextStyle(color: Colors.white)),
                             onPressed: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               // reset() setzt alle Felder wieder auf den Initialwert zurück
                               _formKey.currentState!.reset();
                               // Löscht Inputfelder
