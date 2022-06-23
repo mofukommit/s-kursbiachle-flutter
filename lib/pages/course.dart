@@ -50,7 +50,9 @@ class CourseState extends State<Course> {
   getData() async {
     posts = await GetCourses().getPosts();
     if (posts != null) {
-      dataIterator(posts!);
+      widgetList.clear();
+      dateList.clear();
+      dataIterator();
       setState(() {
         isLoaded = true;
       });
@@ -67,10 +69,9 @@ class CourseState extends State<Course> {
         }
       });
     } else {
-      setState(() => posts?.clear());
-      List<Courses>? new_courses = await GetCourses().getPosts();
       setState(() {
-        posts = new_courses;
+        posts?.clear();
+        getData();
       });
     }
   }
@@ -88,85 +89,81 @@ class CourseState extends State<Course> {
     }
   }
 
-  dataIterator(List<Courses> courses) {
-    for (var course in courses) {
-      dateChecker(course);
-    }
-  }
+  dataIterator() {
+    for (var course in posts!) {
+      DateTime today = new DateTime.now();
+      DateTime? cDate = course.courseDate;
 
-  dateChecker(Courses course) {
-    DateTime today = new DateTime.now();
-    DateTime? c_date = course.courseDate;
-
-    if (c_date.year == today.year &&
-        c_date.month == today.month &&
-        c_date.day == today.day) {
-      if (!dateList.contains(DateFormat('dd-MM-yyyy').format(c_date))) {
-        dateList.add(DateFormat('dd-MM-yyyy').format(c_date));
-        widgetList.add(
-          Container(
-            padding: const EdgeInsets.only(top: 25.0),
-            child: Text('Heute - ${c_date.day}.${c_date.month}.${c_date.year}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                )),
-          ),
-        );
-        widgetList.add(
-          dateContainer(context, course),
-        );
-      } else {
-        widgetList.add(Column(
-          children: [
-            dateContainer(context, course),
-          ],
-        ));
-      }
-    } else {
-      var tomorrow = DateTime(today.year, today.month, today.day + 1);
-      if (!dateList.contains(DateFormat('dd-MM-yyyy').format(c_date))) {
-        dateList.add(DateFormat('dd-MM-yyyy').format(c_date));
-        if (c_date.year == tomorrow.year &&
-            c_date.month == tomorrow.month &&
-            c_date.day == tomorrow.day) {
+      if (cDate.year == today.year &&
+          cDate.month == today.month &&
+          cDate.day == today.day) {
+        if (!dateList.contains(DateFormat('dd-MM-yyyy').format(cDate))) {
+          dateList.add(DateFormat('dd-MM-yyyy').format(cDate));
           widgetList.add(
             Container(
-              padding: const EdgeInsets.only(top: 10.0),
-              child:
-                  Text('Morgen - ${c_date.day}.${c_date.month}.${c_date.year}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      )),
+              padding: const EdgeInsets.only(top: 25.0),
+              child: Text('Heute - ${cDate.day}.${cDate.month}.${cDate.year}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  )),
             ),
           );
           widgetList.add(
             dateContainer(context, course),
           );
         } else {
-          widgetList.add(
-            Container(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Text('${c_date.day}.${c_date.month}.${c_date.year}',
+          widgetList.add(Column(
+            children: [
+              dateContainer(context, course),
+            ],
+          ));
+        }
+      } else {
+        var tomorrow = DateTime(today.year, today.month, today.day + 1);
+        if (!dateList.contains(DateFormat('dd-MM-yyyy').format(cDate))) {
+          dateList.add(DateFormat('dd-MM-yyyy').format(cDate));
+          if (cDate.year == tomorrow.year &&
+              cDate.month == tomorrow.month &&
+              cDate.day == tomorrow.day) {
+            widgetList.add(
+              Container(
+                padding: const EdgeInsets.only(top: 10.0),
+                child:
+                Text('Morgen - ${cDate.day}.${cDate.month}.${cDate.year}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+            );
+            widgetList.add(
+              dateContainer(context, course),
+            );
+          } else {
+            widgetList.add(
+              Container(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text('${cDate.day}.${cDate.month}.${cDate.year}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
               ),
-            ),
-          );
+            );
+            widgetList.add(
+              dateContainer(context, course),
+            );
+          }
+        } else {
           widgetList.add(
             dateContainer(context, course),
           );
         }
-      } else {
-        widgetList.add(
-          dateContainer(context, course),
-        );
       }
     }
   }
