@@ -136,9 +136,8 @@ class CourseState extends State<Course> {
               cDate.day == tomorrow.day) {
             widgetList.add(
               Container(
-                padding: const EdgeInsets.only(top: 10.0),
-                child:
-                Container(
+                padding: const EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
+                child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     color: Colors.kommit[100],
@@ -159,7 +158,7 @@ class CourseState extends State<Course> {
           } else {
             widgetList.add(
               Container(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
