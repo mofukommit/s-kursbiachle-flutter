@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../services/get_course_details.dart';
 
@@ -16,16 +17,18 @@ class CourseDetails extends StatefulWidget {
 class CourseDetailsState extends State<CourseDetails> {
   var isLoaded = false;
   var details;
+  Color? colorCode;
 
   @override
   void initState() {
     super.initState();
+    colorCode = widget.args!['color_code'];
     //fetch data from API
     getCourseDetails();
   }
 
   getCourseDetails() async {
-    details = await GetCourseDetails().getDetails(widget.args!['courseId']);
+    details = await GetCourseDetails().getDetails(widget.args!['courseId'], widget.args!['courseDate']);
 
     if (details != null) {
       setState(() {
@@ -59,7 +62,7 @@ class CourseDetailsState extends State<CourseDetails> {
                       width: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.orange,
+                        color: colorCode,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -84,7 +87,7 @@ class CourseDetailsState extends State<CourseDetails> {
                               ),
                             ),
                             Text(
-                              details[index].startDate.toString() + ' - ' + details[index].endDate.toString(),
+                              'Von ${DateFormat('dd.MM.yyyy').format(details[index].startDate)} bis ${DateFormat('dd.MM.yyyy').format(details[index].endDate)}',
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
