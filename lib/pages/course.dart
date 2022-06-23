@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:skursbiachle/extensions/ColorConvert.dart';
 import '../database/teacher_database.dart';
 import '../model/teacher.dart';
 import '../services/get_courses.dart';
@@ -254,6 +255,7 @@ class CourseState extends State<Course> {
 }
 
 Widget dateContainer(context, Courses course) {
+  Color courseColor = HexColor(course.colorCode);
   return Container(
     padding: const EdgeInsets.only(top: 4, left: 8, right: 8, bottom: 0),
     child: GestureDetector(
@@ -261,6 +263,7 @@ Widget dateContainer(context, Courses course) {
         Navigator.pushNamed(context, '/courseDetails', arguments: {
           'courseId': course.courseId,
           'courseDate': DateFormat('yyyy-MM-dd').format(course.courseDate),
+          'color_code': courseColor,
         });
       },
       child: Card(
@@ -272,7 +275,7 @@ Widget dateContainer(context, Courses course) {
               width: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.orange,
+                color: courseColor,
               ),
             ),
             const SizedBox(width: 16),

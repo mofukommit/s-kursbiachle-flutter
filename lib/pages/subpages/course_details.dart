@@ -17,10 +17,12 @@ class CourseDetails extends StatefulWidget {
 class CourseDetailsState extends State<CourseDetails> {
   var isLoaded = false;
   var details;
+  Color? colorCode;
 
   @override
   void initState() {
     super.initState();
+    colorCode = widget.args!['color_code'];
     //fetch data from API
     getCourseDetails();
   }
@@ -60,7 +62,7 @@ class CourseDetailsState extends State<CourseDetails> {
                       width: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.orange,
+                        color: colorCode,
                       ),
                     ),
                     const SizedBox(width: 16),
