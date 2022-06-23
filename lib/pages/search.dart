@@ -46,170 +46,180 @@ class SearchState extends State<Search> {
           title: const Text('Schülersuche'),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                children: <Widget>[
-                  Row(
+        body: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
+                child: Column(
+                  children: [Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Flexible(
+                          flex: 1,
                           child: TextFormField(
-                        controller: fnameController,
-                        keyboardType: TextInputType.text,
-                        autocorrect: false,
-                        onFieldSubmitted: (value){
-                          fname = fnameController.text;
-                          sname = snameController.text;
-                          isLoaded = false;
-                          isSearched = true;
-                          getPupils();
-                        },
-                        decoration: const InputDecoration(
-                          labelText: 'Vorname',
-                          border: OutlineInputBorder(),
-                        ),
-                        /* validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Bitte einen Namen eintragen';
-                                  }
-                                  return null;
-                                }, */
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
+                            controller: fnameController,
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            onFieldSubmitted: (value) {
+                              fname = fnameController.text;
+                              sname = snameController.text;
+                              isLoaded = false;
+                              isSearched = true;
+                              getPupils();
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Vorname',
+                              labelStyle: const TextStyle(
+                                color: Colors.kommit,
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                                borderSide: const BorderSide(
+                                    color: Color(0xFF8098A3), width: 2.0),
+                              ),
+                              border: const OutlineInputBorder(),
+                            ),
+                            /* validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Bitte einen Namen eintragen';
+                              }
+                              return null;
+                            }, */
+                          )),
+                      const SizedBox(width: 10),
+                      Flexible(
+                        flex: 1,
                         child: TextFormField(
                           controller: snameController,
                           keyboardType: TextInputType.text,
-                          onFieldSubmitted: (value){
+                          onFieldSubmitted: (value) {
                             fname = fnameController.text;
                             sname = snameController.text;
                             isLoaded = false;
                             isSearched = true;
                             getPupils();
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Nachname',
-                            border: OutlineInputBorder(),
+                            labelStyle:  const TextStyle(
+                              color: Colors.kommit,
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                              borderSide:  const BorderSide(
+                                  color: Color(0xFF8098A3), width: 2.0),
+                            ),
+                            border: const OutlineInputBorder(),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.grey,
-                            textStyle: const TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          // reset() setzt alle Felder wieder auf den Initialwert zurück
-                          _formKey.currentState!.reset();
-                          // Löscht Inputfelder
-                          fnameController.text = "";
-                          snameController.text = "";
-                          // Löscht beschriebene Parameter
-                          fname = "";
-                          sname = "";
-                          // Löscht bereits gelistete Schüler
-                          getPupils();
-                        },
-                        child: const Text('Löschen'),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 1,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                                textStyle: const TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              // reset() setzt alle Felder wieder auf den Initialwert zurück
+                              _formKey.currentState!.reset();
+                              // Löscht Inputfelder
+                              fnameController.text = "";
+                              snameController.text = "";
+                              // Löscht beschriebene Parameter
+                              fname = "";
+                              sname = "";
+                              // Löscht bereits gelistete Schüler
+                              getPupils();
+                            },
+                            child: const Text('Löschen'),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 1,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.kommit,
+                                textStyle: const TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              // Todo Validation für Inputfelder hinzufügen
+                              if (_formKey.currentState!.validate()) {
+                                fname = fnameController.text;
+                                sname = snameController.text;
+                                isLoaded = false;
+                                isSearched = true;
+                                getPupils();
+                                print(
+                                    "Formular ist gültig und kann verarbeitet werden");
+                              } else {
+                                print("Formular ist nicht gültig");
+                              }
+                            },
+                            child: const Text('Suchen'),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),],
+                ),
+              ),
+              Expanded(
+                child: Visibility(
+                  visible: isSearched,
+                  child: Visibility(
+                    visible: isLoaded,
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
                       ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.kommit,
-                            textStyle: const TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          // Todo Validation für Inputfelder hinzufügen
-                          if (_formKey.currentState!.validate()) {
-                            fname = fnameController.text;
-                            sname = snameController.text;
-                            isLoaded = false;
-                            isSearched = true;
-                            getPupils();
-                            print(
-                                "Formular ist gültig und kann verarbeitet werden");
-                          } else {
-                            print("Formular ist nicht gültig");
-                          }
-                        },
-                        child: const Text('Suchen'),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 29),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.80,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    // Ladebildschirm wird erst angezeigt,
-                    // wenn auch zu suchen angefangen wurde
-                    child: Visibility(
-                      visible: isSearched,
-                      child: Visibility(
-                        visible: isLoaded,
-                        replacement: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        child: ListView.builder(
-                          itemCount: posts?.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, '/pupilCheck',
-                                    arguments: {
-                                      'pupilID': posts![index].pupilId,
-                                    });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.blueGrey.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: const EdgeInsets.all(16),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${index.abs() + 1}. ${posts![index].fname} ${posts![index].sname}",
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                  ],
-                                ),
+                      child: ListView.separated (
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: posts!.length,
+                        separatorBuilder: (BuildContext context, int index) => const Divider(height:2, thickness: 1, indent: 20, endIndent: 20,),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                            child: Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${index.abs() + 1}. ${posts![index].fname} ${posts![index].sname}",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
+                  ),
+                ),
+              )
+            ],
           ),
         ));
   }
