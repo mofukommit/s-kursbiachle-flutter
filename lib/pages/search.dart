@@ -194,22 +194,30 @@ class SearchState extends State<Search> {
                         itemCount: posts!.length,
                         separatorBuilder: (BuildContext context, int index) => const Divider(height:2, thickness: 1, indent: 20, endIndent: 20,),
                         itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                            child: Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${index.abs() + 1}. ${posts![index].fname} ${posts![index].sname}",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.normal,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/pupilCheck',
+                                  arguments: {
+                                    'pupilID': posts![index].pupilId,
+                                  });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                              child: Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${index.abs() + 1}. ${posts![index].fname} ${posts![index].sname}",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );
