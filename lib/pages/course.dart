@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:skursbiachle/database/courses_database.dart';
 import 'package:skursbiachle/extensions/ColorConvert.dart';
+import 'package:skursbiachle/model/courses.dart';
 import '../database/teacher_database.dart';
 import '../model/teacher.dart';
 import '../services/get_courses.dart';
@@ -50,6 +52,7 @@ class CourseState extends State<Course> {
   getData() async {
     posts = await GetCourses().getPosts();
     if (posts != null) {
+      writeToDB();
       widgetList.clear();
       dateList.clear();
       dataIterator();
@@ -57,6 +60,28 @@ class CourseState extends State<Course> {
         isLoaded = true;
       });
     }
+  }
+
+  writeToDB() async {
+    for(var i=0; i < posts!.length; i++){
+      var ele = posts![i];
+      final course = CourseDB(
+          id: i,
+          amountPupils: ele.amountPupils,
+          courseDate: ele.courseDate,
+          gName: ele.gName,
+          groupId: ele.groupId,
+          startTime: ele.startTime,
+          courseId: ele.courseId,
+          colorCode: ele.colorCode,
+          amPm: ele.amPm
+      );
+
+      // await CoursesDatabase.instance.create(course);
+    }
+
+    CourseDB courses = await CoursesDatabase.instance.readKey(1);
+    print('${courses.gName}');
   }
 
   Future refresh() async {
