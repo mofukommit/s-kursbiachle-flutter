@@ -63,10 +63,11 @@ class CourseState extends State<Course> {
   }
 
   writeToDB() async {
+    await deleteAllNewerEntries();
     for(var i=0; i < posts!.length; i++){
       var ele = posts![i];
       final course = CourseDB(
-          id: i,
+          id: UniqueKey().hashCode,
           amountPupils: ele.amountPupils,
           courseDate: ele.courseDate,
           gName: ele.gName,
@@ -76,12 +77,23 @@ class CourseState extends State<Course> {
           colorCode: ele.colorCode,
           amPm: ele.amPm
       );
-
-      // await CoursesDatabase.instance.create(course);
+      await CoursesDatabase.instance.create(course);
     }
+  }
 
-    CourseDB courses = await CoursesDatabase.instance.readKey(1);
-    print('${courses.gName}');
+  deleteAllNewerEntries() async {
+    List<CourseDB> co = await CoursesDatabase.instance.getCourses();
+    DateTime today = new DateTime.now();
+
+    co.forEach((element) async {
+      DateTime cDate = element.courseDate;
+      if (cDate.year >= today.year &&
+          cDate.month >= today.month &&
+          cDate.day >= today.day) {
+        await CoursesDatabase.instance.delete(element.id);
+      }
+    }
+    );
   }
 
   Future refresh() async {
@@ -379,18 +391,24 @@ Widget dateContainer(context, Courses course) {
 
 ampmSelector(String amPm) {
   if (amPm == 'a') {
-    return const Text(
-        "Vormittag",
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontWeight: FontWeight.bold)
+    return const Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: Text(
+          "Vormittag",
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.bold)
+      ),
     );
   } else {
-    return const Text(
-        "Nachmittag",
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontWeight: FontWeight.bold)
+    return const Padding(
+      padding: EdgeInsets.only(right: 8.0),
+      child: Text(
+          "Nachmittag",
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.bold)
+      ),
     );
   }
 }

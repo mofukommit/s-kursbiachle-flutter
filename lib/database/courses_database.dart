@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:skursbiachle/model/courses.dart';
+import 'package:skursbiachle/services/json_courses.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../model/teacher.dart';
@@ -80,6 +82,54 @@ class CoursesDatabase {
     final db = await instance.database;
 
     db.close();
+  }
+
+  Future<List<CourseDB>> getCourses() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('courses');
+
+    return List.generate(maps.length, (i) {
+      return CourseDB(
+        id: maps[i]['id'],
+        gName: maps[i]['gName'],
+        courseId: maps[i]['courseId'],
+        amPm: maps[i]['amPm'],
+        colorCode: maps[i]['colorCode'],
+        amountPupils: int.parse(maps[i]['amountPupils']),
+        courseDate: DateTime.parse(maps[i]['courseDate']),
+        startTime: maps[i]['startTime'],
+        groupId: maps[i]['groupId']
+      );
+    });
+  }
+  
+  Future<List<CourseDB>> getDailyClosings() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('courses');
+    DateTime today = new DateTime.now();
+    List<CourseDB> map = [];
+    for(var i=0; i < maps.length; i++){
+      DateTime cDate = DateTime.parse(maps[i]['courseDate']);
+      if (cDate.year <= today.year &&
+          cDate.month <= today.month &&
+          cDate.day <= today.day) {
+        map.add(CourseDB(
+            id: maps[i]['id'],
+            gName: maps[i]['gName'],
+            courseId: maps[i]['courseId'],
+            amPm: maps[i]['amPm'],
+            colorCode: maps[i]['colorCode'],
+            amountPupils: int.parse(maps[i]['amountPupils']),
+            courseDate: DateTime.parse(maps[i]['courseDate']),
+            startTime: maps[i]['startTime'],
+            groupId: maps[i]['groupId']
+        ));
+      }
+    }
+
+    return List.generate(map.length, (i) {
+      return map[i];
+      });
   }
 }
 
