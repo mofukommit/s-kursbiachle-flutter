@@ -249,30 +249,7 @@ class SearchState extends State<Search> {
                                           ),
                                         ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "${posts![index].fname} ${posts![index].sname}",
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            "Alter: ${posts![index].age}",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                      textLength(posts![index])
                                     ],
                                   ),
                                 ),
@@ -289,4 +266,43 @@ class SearchState extends State<Search> {
           ),
         ));
   }
+}
+
+Widget textLength(Pupilsearch posts){
+  var fname = '';
+  var sname = '';
+  if (posts.fname.length > 8){
+    fname = '${posts.fname.substring(0, 8)}...';
+  }else{
+    fname = posts.fname;
+  }
+  if (posts.sname.length > 8){
+    sname = '${posts.sname.substring(0, 8)}...';
+  }else{
+    sname = posts.sname;
+  }
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          "${fname} ${sname}",
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+      Text(
+        "Alter: ${posts.age}",
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+    ],
+  );
 }
