@@ -12,15 +12,15 @@ class CoursesFields {
     id, groupId, courseId, startTime, gName, amountPupils, amPm, courseDate, colorCode
   ];
 
-  static final String id = '';
-  static final String amountPupils = '';
-  static final String courseDate = '';
-  static final String gName = '';
-  static final String groupId = '';
-  static final String startTime = '';
-  static final String courseId = '';
-  static final String colorCode = '';
-  static final String amPm = '';
+  static final String id = 'id';
+  static final String amountPupils = 'amountPupils';
+  static final String courseDate = 'courseDate';
+  static final String gName = 'gName';
+  static final String groupId = 'groupId';
+  static final String startTime = 'startTime';
+  static final String courseId = 'courseId';
+  static final String colorCode = 'colorCode';
+  static final String amPm = 'amPm';
 
 }
 

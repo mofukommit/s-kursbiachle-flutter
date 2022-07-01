@@ -18,6 +18,7 @@ class Courses {
     required this.courseId,
     required this.colorCode,
     required this.amPm,
+    required this.gId,
   });
 
   int amountPupils;
@@ -28,6 +29,7 @@ class Courses {
   String courseId;
   String colorCode;
   String amPm;
+  List<String> gId;
 
   factory Courses.fromJson(Map<String, dynamic> json) => Courses(
     amountPupils: json["amount_pupils"],
@@ -38,6 +40,7 @@ class Courses {
     courseId: json["course_id"],
     colorCode: json["color_code"],
     amPm: json['ampm'],
+    gId: List<String>.from(json["g_id"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -49,5 +52,6 @@ class Courses {
     "course_id": courseId,
     "color_code": colorCode,
     "ampm": amPm,
+    "g_id": List<dynamic>.from(gId.map((x) => x)),
   };
 }

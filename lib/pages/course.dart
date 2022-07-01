@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:skursbiachle/database/closures_database.dart';
 import 'package:skursbiachle/database/courses_database.dart';
 import 'package:skursbiachle/extensions/ColorConvert.dart';
+import 'package:skursbiachle/model/closings.dart';
 import 'package:skursbiachle/model/courses.dart';
 import '../database/teacher_database.dart';
 import '../model/teacher.dart';
@@ -65,7 +67,18 @@ class CourseState extends State<Course> {
   writeToDB() async {
     await deleteAllNewerEntries();
     for(var i=0; i < posts!.length; i++){
+      print(posts![i].gId);
       var ele = posts![i];
+      ele.gId.forEach((element) async {
+        if (await DailyDatabase.instance.getExisting(element, ele.courseId)){
+          final daily = DailyDB(
+              id: UniqueKey().hashCode,
+              buildId: ele.courseId,
+              courseDate: ele.courseDate,
+              gId: element);
+          await DailyDatabase.instance.create(daily);
+        }
+      });
       final course = CourseDB(
           id: UniqueKey().hashCode,
           amountPupils: ele.amountPupils,
@@ -79,6 +92,12 @@ class CourseState extends State<Course> {
       );
       await CoursesDatabase.instance.create(course);
     }
+
+    List <DailyDB> c = await DailyDatabase.instance.getDaily();
+    print(c.length);
+    c.forEach((element) {
+      print('${element.gId}, ${element.courseDate}, ${element.buildId}, ${element.id}');
+    });
   }
 
   deleteAllNewerEntries() async {

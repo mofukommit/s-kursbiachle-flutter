@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:skursbiachle/database/courses_database.dart';
+import 'package:skursbiachle/extensions/write_files.dart';
 import 'package:skursbiachle/model/courses.dart';
+import 'package:skursbiachle/services/daily_closure.dart';
 
 import '../database/teacher_database.dart';
 import '../extensions/ColorConvert.dart';
@@ -93,8 +95,11 @@ closure_card(CourseDB info) {
   return Container(
     padding: const EdgeInsets.only(top: 4, left: 8, right: 8, bottom: 0),
     child: GestureDetector(
-      onTap: () {
-        print('TABBED');
+      onTap: () async {
+        await DailyClosure().writeDataToFile(info);
+        Communication().readCommunication().then((value){
+          print(value);
+        });
       },
       child: Card(
         color: Colors.red.withOpacity(0.5),

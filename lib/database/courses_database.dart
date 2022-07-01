@@ -73,7 +73,7 @@ class CoursesDatabase {
 
     return await db.delete(
       tableCourses,
-      where: '${KeysFields.id} = ?',
+      where: '${CoursesFields.id} = ?',
       whereArgs: [id],
     );
   }
@@ -131,5 +131,6 @@ class CoursesDatabase {
       return map[i];
       });
   }
+
 }
 
