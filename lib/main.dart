@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:skursbiachle/pages/subpages/authorized.dart';
 import 'package:skursbiachle/pages/subpages/pupil_detail.dart';
 import 'package:skursbiachle/root.dart';
@@ -24,7 +25,7 @@ class PostHttpOverrides extends HttpOverrides{
 
 void main() {
   HttpOverrides.global = new PostHttpOverrides();
-  runApp(const MyApp());
+  initializeDateFormatting('de_DE').then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
